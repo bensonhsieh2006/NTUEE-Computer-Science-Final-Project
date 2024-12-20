@@ -186,7 +186,7 @@ void Scene::renderStory(SDL_Renderer* &r, int &controlNum, bool &loaded){
     setViewport(SCREEN_WIDTH/20*18, SCREEN_HEIGHT/20, SCREEN_WIDTH/15, SCREEN_HEIGHT/15);
     SDL_RenderCopyF( r, textTexture, NULL, &viewport );
 
-    textheight -= 0.2;
+    textheight -= 0.05;
 //    std::cout<<textheight<<std::endl;
     if (textheight < -900)
     {
@@ -211,6 +211,18 @@ void Scene::renderMainpage(SDL_Renderer* &r, int &controlNum, bool &loaded){
 
     setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
     SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+
+    setViewport(SCREEN_WIDTH/10, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
+    SDL_RenderCopyF( r, extendedTexture1, NULL, &viewport );
+
+    setViewport(SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5);
+    SDL_RenderCopyF( r, extendedTexture2, NULL, &viewport );
+
+    setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5);
+    SDL_RenderCopyF( r, extendedTexture3, NULL, &viewport );
+
+    setViewport(SCREEN_WIDTH*3/5, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5);
+    SDL_RenderCopyF( r, extendedTexture4, NULL, &viewport );
 }
 
 void Scene::free(){
