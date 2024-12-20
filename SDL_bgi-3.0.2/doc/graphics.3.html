@@ -1,0 +1,790 @@
+<head>
+<link rel="stylesheet" type="text/css" href="./style.css"> <link rel="shortcut icon" href="./X11.png">
+<meta charset="utf-8"/>
+</head>
+<h1 id="name">NAME</h1>
+<p>graphics.h - compatibility header for SDL_bgi</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p><strong>#include &lt;graphics.h&gt;</strong></p>
+<h1 id="description">DESCRIPTION</h1>
+<p>This header file must be included by C or C++ programs that use the <em>SDL_bgi</em> library. <code>graphics.h</code> includes <code>SDL_bgi.h</code>, usually installed in <code>/usr/include/SDL2</code>, which contains all definitions and function prototypes.</p>
+<p><em>SDL bgi</em> is a graphics library (GRAPHICS.H) for C, C++, WebAssembly, and Python. It’s based on SDL2 and it’s portable on many platforms.</p>
+<p>This library strictly emulates BGI functions, making it possible to compile SDL2 versions of programs written for Turbo C/Borland C++. ARGB colours, vector fonts, mouse support, and multiple windows are also implemented; further, native SDL2 functions may be used in <em>SDL_bgi</em> programs.</p>
+<p>Python programs can use <em>SDL_bgi</em> by means of module <code>sdl_bgi.py</code>.</p>
+<h1 id="variables">VARIABLES</h1>
+<pre><code>extern SDL_Window   *bgi_window;
+extern SDL_Renderer *bgi_renderer;
+extern SDL_Texture  *bgi_texture;
+extern Uint32        PALETTE_SIZE;</code></pre>
+<h1 id="definitions">DEFINITIONS</h1>
+<p> </p>
+<h2 id="font-definitions">Font definitions</h2>
+<p> </p>
+<pre><code>enum {
+  DEFAULT_FONT,      // 8x8 bitmap
+  TRIPLEX_FONT,      // trip.h
+  SMALL_FONT,        // litt.h
+  SANS_SERIF_FONT,   // sans.h
+  GOTHIC_FONT,       // goth.h
+  SCRIPT_FONT,       // scri.h
+  SIMPLEX_FONT,      // simp.h
+  TRIPLEX_SCR_FONT,  // tscr.h
+  COMPLEX_FONT,      // lcom.h
+  EUROPEAN_FONT,     // euro.h
+  BOLD_FONT,         // bold.h
+  LAST_SPEC_FONT
+};
+
+enum { HORIZ_DIR, VERT_DIR };
+
+#define USER_CHAR_SIZE 0
+
+enum {
+  LEFT_TEXT, CENTER_TEXT, RIGHT_TEXT,
+  BOTTOM_TEXT = 0, TOP_TEXT = 2
+};</code></pre>
+<h2 id="colour-definitions">Colour definitions</h2>
+<p> </p>
+<pre><code>enum {
+  BLACK        = 0,                         EGA_BLACK        = 0,
+  BLUE         = 1,                         EGA_BLUE         = 1,
+  GREEN        = 2,  CGA_GREEN        = 2,  EGA_GREEN        = 2,
+  CYAN         = 3,  CGA_CYAN         = 3,  EGA_CYAN         = 3,
+  RED          = 4,  CGA_RED          = 4,  EGA_RED          = 4,
+  MAGENTA      = 5,  CGA_MAGENTA      = 5,  EGA_MAGENTA      = 5,
+  BROWN        = 6,  CGA_BROWN        = 6,  EGA_BROWN        = 6,
+  LIGHTGRAY    = 7,  CGA_LIGHTGRAY    = 7,  EGA_LIGHTGRAY    = 7,
+  DARKGRAY     = 8,                         EGA_DARKGRAY     = 8,
+  LIGHTBLUE    = 9,                         EGA_LIGHTBLUE    = 9,
+  LIGHTGREEN   = 10, CGA_LIGHTGREEN   = 10, EGA_LIGHTGREEN   = 10,
+  LIGHTCYAN    = 11, CGA_LIGHTCYAN    = 11, EGA_LIGHTCYAN    = 11,
+  LIGHTRED     = 12, CGA_LIGHTRED     = 12, EGA_LIGHTRED     = 12,
+  LIGHTMAGENTA = 13, CGA_LIGHTMAGENTA = 13, EGA_LIGHTMAGENTA = 13,
+  YELLOW       = 14, CGA_YELLOW       = 14, EGA_YELLOW       = 14,
+  WHITE        = 15, CGA_WHITE        = 15, EGA_WHITE        = 15,
+  MAXCOLORS    = 15
+};
+
+enum {
+  ARGB_FG_COL   = 16,
+  ARGB_BG_COL   = 17,
+  ARGB_FILL_COL = 18,
+  ARGB_TMP_COL  = 19,
+  TMP_COLORS    = 4
+};</code></pre>
+<h2 id="drawing-and-filling-styles">Drawing and filling styles</h2>
+<p> </p>
+<pre><code>enum { NORM_WIDTH = 1, THICK_WIDTH = 3 };
+
+enum { SOLID_LINE, DOTTED_LINE, CENTER_LINE, DASHED_LINE, USERBIT_LINE };
+
+enum { COPY_PUT, XOR_PUT, OR_PUT, AND_PUT, NOT_PUT };
+
+enum {
+  EMPTY_FILL,       // fills area in background color
+  SOLID_FILL,       // fills area in solid fill color
+  LINE_FILL,        // --- fill
+  LTSLASH_FILL,     // /// fill
+  SLASH_FILL,       // /// fill with thick lines
+  BKSLASH_FILL,     // \\\ fill with thick lines
+  LTBKSLASH_FILL,   // \\\ fill
+  HATCH_FILL,       // light hatch fill
+  XHATCH_FILL,      // heavy cross hatch fill
+  INTERLEAVE_FILL,  // interleaving line fill
+  WIDE_DOT_FILL,    // Widely spaced dot fill
+  CLOSE_DOT_FILL,   // Closely spaced dot fill
+  USER_FILL         // user defined fill
+};</code></pre>
+<h2 id="mouse-buttons">Mouse buttons</h2>
+<p> </p>
+<pre><code>#define WM_LBUTTONDOWN  SDL_BUTTON_LEFT
+#define WM_MBUTTONDOWN  SDL_BUTTON_MIDDLE
+#define WM_RBUTTONDOWN  SDL_BUTTON_RIGHT
+#define WM_WHEEL        SDL_MOUSEWHEEL
+#define WM_WHEELUP      SDL_USEREVENT
+#define WM_WHEELDOWN    SDL_USEREVENT + 1
+#define WM_MOUSEMOVE    SDL_MOUSEMOTION</code></pre>
+<h2 id="key-codes">Key codes</h2>
+<p> </p>
+<pre><code>#define KEY_HOME        SDLK_HOME
+#define KEY_LEFT        SDLK_LEFT
+#define KEY_UP          SDLK_UP
+#define KEY_RIGHT       SDLK_RIGHT
+#define KEY_DOWN        SDLK_DOWN
+#define KEY_PGUP        SDLK_PAGEUP
+#define KEY_PGDN        SDLK_PAGEDOWN
+#define KEY_END         SDLK_END
+#define KEY_INSERT      SDLK_INSERT
+#define KEY_DELETE      SDLK_DELETE
+#define KEY_F1          SDLK_F1
+#define KEY_F2          SDLK_F2
+#define KEY_F3          SDLK_F3
+#define KEY_F4          SDLK_F4
+#define KEY_F5          SDLK_F5
+#define KEY_F6          SDLK_F6
+#define KEY_F7          SDLK_F7
+#define KEY_F8          SDLK_F8
+#define KEY_F9          SDLK_F9
+#define KEY_F10         SDLK_F10
+#define KEY_F11         SDLK_F11
+#define KEY_F12         SDLK_F12
+#define KEY_CAPSLOCK    SDLK_CAPSLOCK
+#define KEY_LEFT_CTRL   SDLK_LCTRL
+#define KEY_RIGHT_CTRL  SDLK_RCTRL
+#define KEY_LEFT_SHIFT  SDLK_LSHIFT
+#define KEY_RIGHT_SHIFT SDLK_RSHIFT
+#define KEY_LEFT_ALT    SDLK_LALT
+#define KEY_RIGHT_ALT   SDLK_RALT
+#define KEY_ALT_GR      SDLK_MODE
+#define KEY_LGUI        SDLK_LGUI
+#define KEY_RGUI        SDLK_RGUI
+#define KEY_MENU        SDLK_MENU
+#define KEY_TAB         SDLK_TAB
+#define KEY_BS          SDLK_BACKSPACE
+#define KEY_RET         SDLK_RETURN
+#define KEY_PAUSE       SDLK_PAUSE
+#define KEY_SCR_LOCK    SDLK_SCROLLOCK
+#define KEY_ESC         SDLK_ESCAPE
+
+#define QUIT            SDL_QUIT</code></pre>
+<h2 id="graphics-modes">Graphics modes</h2>
+<p> </p>
+<pre><code>enum {
+  DETECT = -1,
+  SDL = 0,
+  // all modes @ 320x200
+  SDL_320x200 = 1, SDL_CGALO = 1, CGA = 1, CGAC0 = 1, CGAC1 = 1,
+  CGAC2 = 1, CGAC3 = 1, MCGAC0 = 1, MCGAC1 = 1, MCGAC2 = 1,
+  MCGAC3 = 1, ATT400C0 = 1, ATT400C1 = 1, ATT400C2 = 1, ATT400C3 = 1,
+  // all modes @ 640x200
+  SDL_640x200 = 2, SDL_CGAHI = 2, CGAHI = 2, MCGAMED = 2,
+  EGALO = 2, EGA64LO = 2,
+  // all modes @ 640x350
+  SDL_640x350 = 3, SDL_EGA = 3, EGA = 3, EGAHI = 3,
+  EGA64HI = 3, EGAMONOHI = 3,
+  // all modes @ 640x480
+  SDL_640x480 = 4, SDL_VGA = 4, VGA = 4, MCGAHI = 4, VGAHI = 4,
+  IBM8514LO = 4,
+  // all modes @ 720x348
+  SDL_720x348 = 5, SDL_HERC = 5,
+  // all modes @ 720x350
+  SDL_720x350 = 6, SDL_PC3270 = 6, HERCMONOHI = 6,
+  // all modes @ 800x600
+  SDL_800x600 = 7, SDL_SVGALO = 7, SVGA = 7,
+  // all modes @ 1024x768
+  SDL_1024x768 = 8, SDL_SVGAMED1 = 8,
+  // all modes @ 1152x900
+  SDL_1152x900 = 9, SDL_SVGAMED2 = 9,
+  // all modes @ 1280x1024
+  SDL_1280x1024 = 10, SDL_SVGAHI = 10,
+  // all modes @ 1366x768
+  SDL_1366x768 = 11, SDL_WXGA = 11,
+  // other
+  SDL_USER = 12, SDL_FULLSCREEN = 13
+};</code></pre>
+<h2 id="error-messages">Error messages</h2>
+<p> </p>
+<pre><code>enum graphics_errors {
+  grOk               =   0,
+  grNoInitGraph      =  -1,
+  grNotDetected      =  -2,
+  grFileNotFound     =  -3,
+  grInvalidDriver    =  -4,
+  grNoLoadMem        =  -5,
+  grNoScanMem        =  -6,
+  grNoFloodMem       =  -7,
+  grFontNotFound     =  -8,
+  grNoFontMem        =  -9,
+  grInvalidMode      = -10,
+  grError            = -11,
+  grIOerror          = -12,
+  grInvalidFont      = -13,
+  grInvalidFontNum   = -14,
+  grInvalidVersion   = -18
+};</code></pre>
+<h2 id="struct-definitions">Struct definitions</h2>
+<p> </p>
+<pre><code>struct arccoordstype {
+  int x;
+  int y;
+  int xstart;
+  int ystart;
+  int xend;
+  int yend;
+};
+
+struct date {
+  int da_year;
+  int da_day;
+  int da_mon;
+};
+
+struct fillsettingstype {
+  int pattern;
+  int color;
+};
+
+struct linesettingstype {
+  int linestyle;
+  unsigned int upattern;
+  int thickness;
+};
+
+struct palettetype {
+  unsigned char size;
+  signed char colors[MAXCOLORS + 1];
+};
+
+// SDL_bgi extension
+struct rgbpalettetype {
+  Uint32 size;
+  Uint32 *colors;
+};
+
+struct textsettingstype {
+  int font;
+  int direction;
+  int charsize;
+  int horiz;
+  int vert;
+};
+
+struct viewporttype {
+  int left;
+  int top;
+  int right;
+  int bottom;
+  int clip;
+};</code></pre>
+<h1 id="functions">FUNCTIONS</h1>
+<p> </p>
+<h2 id="standard-bgi-functions">Standard BGI functions</h2>
+<p> </p>
+<dl>
+<dt>void <em>arc</em> (int x, int y, int stangle, int endangle, int radius);</dt>
+<dd>Draws a circular arc centered at (<em>x, y</em>), with a radius given by <em>radius</em>, traveling counterclockwise from <em>stangle</em> to <em>endangle</em>.
+</dd>
+<dt>void <em>bar</em> (int left, int top, int right, int bottom);</dt>
+<dd>Draws a filled-in rectangle (bar), using the current fill colour and fill pattern.
+</dd>
+<dt>void <em>bar3d</em> (int left, int top, int right, int bottom, int depth, int topflag);</dt>
+<dd>Draws a three-dimensional, filled-in rectangle (bar), using the current fill colour and fill pattern.
+</dd>
+<dt>void <em>circle</em> (int x, int y, int radius);</dt>
+<dd>Draws a circle of the given <em>radius</em> at (<em>x, y</em>).
+</dd>
+<dt>void <em>cleardevice</em> (void);</dt>
+<dd>Clears the graphics screen, filling it with the current background colour.
+</dd>
+<dt>void <em>clearviewport</em> (void);</dt>
+<dd>Clears the viewport, filling it with the current background colour.
+</dd>
+<dt>void <em>closegraph</em> (void);</dt>
+<dd>Closes the graphics system.
+</dd>
+<dt>void <em>delay</em> (int millisec)</dt>
+<dd>Waits for <em>millisec</em> milliseconds.
+</dd>
+<dt>void <em>detectgraph</em> (int *graphdriver, int *graphmode);</dt>
+<dd>Detects the default graphics driver and graphics mode to use; <em>SDL</em> and <em>SDL_FULLSCREEN</em>, respectively.
+</dd>
+<dt>void <em>drawpoly</em> (int numpoints, int *polypoints);</dt>
+<dd>Draws a polygon of <em>numpoints</em> vertices.
+</dd>
+<dt>void <em>ellipse</em> (int x, int y, int stangle, int endangle, int xradius, int yradius);</dt>
+<dd>Draws an elliptical arc centered at (<em>x</em>, <em>y</em>), with axes given by <em>xradius</em> and <em>yradius</em>, traveling from <em>stangle</em> to <em>endangle</em>.
+</dd>
+<dt>void <em>fillellipse</em> (int x, int y, int xradius, int yradius);</dt>
+<dd>Draws an elliptical arc centered at (<em>x</em>, <em>y</em>), with axes given by <em>xradius</em> and <em>yradius</em>, and fills it using the current fill colour and fill pattern.
+</dd>
+<dt>void <em>fillpoly</em> (int numpoints, int *polypoints);</dt>
+<dd>Draws a polygon of <em>numpoints</em> vertices and fills it using the current fill colour.
+</dd>
+<dt>void <em>floodfill</em> (int x, int y, int border);</dt>
+<dd>Fills an enclosed area, starting from point (<em>x</em>, <em>y</em>) bounded by the <em>border</em> colour. The area is filled using the current fill colour.
+</dd>
+<dt>int <em>getactivepage</em> (void);</dt>
+<dd>Returns the active page number.
+</dd>
+<dt>void <em>getarccoords</em> (struct arccoordstype *arccoords);</dt>
+<dd>Gets the coordinates of the last call to <em>arc</em>(), filling the <em>arccoords</em> structure.
+</dd>
+<dt>void <em>getaspectratio</em> (int *xasp, int *yasp);</dt>
+<dd>Retrieves the current graphics mode’s aspect ratio. <em>xasp</em> and <em>yasp</em> are always 10000 (i.e. pixels are square).
+</dd>
+<dt>int <em>getbkcolor</em> (void);</dt>
+<dd>Returns the current background colour.
+</dd>
+<dt>int <em>getch</em> (void);</dt>
+<dd>Waits for a key and returns its ASCII or key code.
+</dd>
+<dt>int <em>getcolor</em> (void);</dt>
+<dd>Returns the current drawing (foreground) colour.
+</dd>
+<dt>struct palettetype* <em>getdefaultpalette</em> (void);</dt>
+<dd>Returns the default palette definition structure.
+</dd>
+<dt>char* <em>getdrivername</em> (void);</dt>
+<dd>Returns a pointer to a string containing the name of the current graphics driver.
+</dd>
+<dt>void <em>getfillpattern</em> (char *pattern);</dt>
+<dd>Copies the user-defined fill pattern, as set by <em>setfillpattern</em>(), into the 8-byte area pointed to by <em>pattern</em>.
+</dd>
+<dt>void <em>getfillsettings</em> (struct fillsettingstype *fillinfo);</dt>
+<dd>Fills the <em>fillsettingstype</em> structure pointed to by <em>fillinfo</em> with information about the current fill pattern and fill colour.
+</dd>
+<dt>int <em>getgraphmode</em> (void);</dt>
+<dd>Returns the current graphics mode.
+</dd>
+<dt>void <em>getimage</em> (int left, int top, int right, int bottom, void *bitmap);</dt>
+<dd>Copies a bit image of the specified region into the memory pointed to by <em>bitmap</em>.
+</dd>
+<dt>void <em>getlinesettings</em> (struct linesettingstype *lineinfo);</dt>
+<dd>Fills the <em>linesettingstype</em> structure pointed to by <em>lineinfo</em> with information about the current line style, pattern, and thickness.
+</dd>
+<dt>int <em>getmaxcolor</em> (void);</dt>
+<dd>Returns the maximum colour value available (<em>MAXCOLORS</em>). If ARGB colours are being used, it returns <em>PALETTE_SIZE</em> (default is 4096).
+</dd>
+<dt>int <em>getmaxmode</em> (void);</dt>
+<dd>Returns the maximum mode number for the current driver. In <em>SDL_bgi</em>, the default is <em>SDL_FULLSCREEN</em>.
+</dd>
+<dt>int <em>getmaxx</em> (void);</dt>
+<dd>Returns the maximum <em>x</em> screen coordinate.
+</dd>
+<dt>int <em>getmaxy</em> (void);</dt>
+<dd>Returns the maximum <em>y</em> screen coordinate.
+</dd>
+<dt>char* <em>getmodename</em> (int mode_number);</dt>
+<dd>Returns a pointer to a string containing the name of the specified graphics mode.
+</dd>
+<dt>void <em>getmoderange</em> (int graphdriver, int *lomode, int *himode);</dt>
+<dd>Returns the range of valid graphics modes. The <em>graphdriver</em> parameter is ignored.
+</dd>
+<dt>void <em>getpalette</em> (struct palettetype *palette);</dt>
+<dd>Fills the <em>palettetype</em> structure pointed to by <em>palette</em> with information about the current palette size and colours.
+</dd>
+<dt>int <em>getpalettesize</em> (void);</dt>
+<dd>Returns the size of the palette (<em>MAXCOLORS</em> + 1 or <em>MAXRGBCOLORS</em> + 1).
+</dd>
+<dt>unsigned int <em>getpixel</em> (int x, int y);</dt>
+<dd>Returns the colour of the pixel located at (<em>x</em>, <em>y</em>).
+</dd>
+<dt>void <em>gettextsettings</em> (struct textsettingstype *texttypeinfo);</dt>
+<dd>Fills the <em>textsettingstype</em> structure pointed to by <em>texttypeinfo</em> with information about the current text font, direction, size, and justification.
+</dd>
+<dt>void <em>getviewsettings</em> (struct viewporttype *viewport);</dt>
+<dd>Fills the <em>viewporttype</em> structure pointed to by <em>viewport</em> with information about the current viewport.
+</dd>
+<dt>int <em>getvisualpage</em> (void);</dt>
+<dd>Returns the visual page number.
+</dd>
+<dt>int <em>getx</em> (void);</dt>
+<dd>Returns the current CP <em>x</em> coordinate, relative to the viewport.
+</dd>
+<dt>int <em>gety</em> (void);</dt>
+<dd>Returns the current CP <em>y</em> coordinate, relative to the viewport.
+</dd>
+<dt>void <em>graphdefaults</em> (void);</dt>
+<dd>Resets all graphics settings to their default values.
+</dd>
+<dt>char* <em>grapherrormsg</em> (int errorcode);</dt>
+<dd>Returns a pointer to the error message string associated with <em>errorcode</em>, returned by <em>graphresult</em>().
+</dd>
+<dt>int <em>graphresult</em> (void);</dt>
+<dd>Returns the error code for the last unsuccessful graphics operation and resets the error level to <em>grOk</em>.
+</dd>
+<dt>unsigned <em>imagesize</em> (int left, int top, int right, int bottom);</dt>
+<dd>Returns the size in bytes of the memory area required to store a bit image.
+</dd>
+<dt>void <em>initgraph</em> (int *graphdriver, int *graphmode, char *pathtodriver);</dt>
+<dd>Initializes the graphics system. Use <em>initgraph (NULL, NULL, "");</em> for default settings.
+</dd>
+<dt>int <em>installuserdriver</em> (char *name, int huge (*detect)(void));</dt>
+<dd>Unimplemented.
+</dd>
+<dt>int <em>installuserfont</em> (char *name);</dt>
+<dd>Loads and installs a <em>CHR</em> font from disk. The function returns an integer to be used as first argument in <em>settextstyle</em>().
+</dd>
+<dt>int <em>kbhit</em> (void);</dt>
+<dd>Returns 1 when a key is pressed, excluding special keys (Ctrl, Shift, etc.)
+</dd>
+<dt>int <em>lastkey</em> (void);</dt>
+<dd>Returns the last key that was detected by <em>kbhit</em>().
+</dd>
+<dt>void <em>line</em> (int x1, int y1, int x2, int y2);</dt>
+<dd>Draws a line between two specified points.
+</dd>
+<dt>void <em>linerel</em> (int dx, int dy);</dt>
+<dd>Draws a line from the CP to a point that is (<em>dx</em>, <em>dy</em>) pixels from the CP. The CP is then advanced by (<em>dx</em>, <em>dy</em>).
+</dd>
+<dt>void <em>lineto</em> (int x, int y);</dt>
+<dd>Draws a line from the CP to (<em>x</em>, <em>y</em>), then moves the CP to (<em>dx</em>, <em>dy</em>).
+</dd>
+<dt>void <em>moverel</em> (int dx, int dy);</dt>
+<dd>Moves the CP by (<em>dx</em>, <em>dy</em>) pixels.
+</dd>
+<dt>void <em>moveto</em> (int x, int y);</dt>
+<dd>Moves the CP to the position (<em>x</em>, <em>y</em>), relative to the viewport.
+</dd>
+<dt>void <em>outtext</em> (char *textstring);</dt>
+<dd>Outputs <em>textstring</em> at the CP.
+</dd>
+<dt>void <em>outtextxy</em> (int x, int y, char *textstring);</dt>
+<dd>Outputs <em>textstring</em> at (<em>x</em>, <em>y</em>).
+</dd>
+<dt>void <em>pieslice</em> (int x, int y, int stangle, int endangle, int radius);</dt>
+<dd>Draws and fills a pie slice centered at (<em>x</em>, <em>y</em>), with a radius given by <em>radius</em>, traveling from <em>stangle</em> to <em>endangle</em>.
+</dd>
+<dt>void <em>putimage</em> (int left, int top, void *bitmap, int op);</dt>
+<dd>Puts the bit image pointed to by <em>bitmap</em> onto the screen, with the upper left corner of the image placed at (<em>left</em>, <em>top</em>). <em>op</em> specifies the drawing mode (<em>COPY_PUT</em>, etc).
+</dd>
+<dt>void <em>putpixel</em> (int x, int y, int color);</dt>
+<dd>Plots a pixel at (<em>x</em>, <em>y</em>) using <em>color</em>.
+</dd>
+<dt>int <em>random</em> (int range) (macro)</dt>
+<dd>Returns an integer random number between 0 and <em>range - 1</em>.
+</dd>
+<dt>void <em>rectangle</em> (int left, int top, int right, int bottom);</dt>
+<dd>Draws a rectangle delimited by (<em>left</em>, <em>top</em>) and (<em>right</em>, <em>bottom</em>).
+</dd>
+<dt>int <em>registerbgidriver</em> (void (*driver)(void));</dt>
+<dd>Unimplemented; not used by <em>SDL_bgi</em>.
+</dd>
+<dt>int <em>registerbgifont</em> (void (*font)(void));</dt>
+<dd>Unimplemented; not used by <em>SDL_bgi</em>.
+</dd>
+<dt>void <em>restorecrtmode</em> (void);</dt>
+<dd>Hides the graphics window.
+</dd>
+<dt>void <em>sector</em> (int x, int y, int stangle, int endangle, int xradius, int yradius);</dt>
+<dd>Draws and fills an elliptical pie slice centered at (<em>x</em>, <em>y</em>), horizontal and vertical radii given by <em>xradius</em> and <em>yradius</em>, traveling from <em>stangle</em> to <em>endangle</em>.
+</dd>
+<dt>void <em>setactivepage</em> (int page);</dt>
+<dd>Makes <em>page</em> the active page for all subsequent graphics output.
+</dd>
+<dt>void <em>setallpalette</em> (struct palettetype *palette);</dt>
+<dd>Sets the current palette to the values given in <em>palette</em>.
+</dd>
+<dt>void <em>setaspectratio</em> (int xasp, int yasp);</dt>
+<dd>Changes the default aspect ratio of the graphics.
+</dd>
+<dt>void <em>setbkcolor</em> (int color);</dt>
+<dd>Sets the current background colour.
+</dd>
+<dt>void <em>setcolor</em> (int color);</dt>
+<dd>Sets the current drawing colour.
+</dd>
+<dt>void <em>setfillpattern</em> (char *upattern, int color);</dt>
+<dd>Sets a user-defined fill pattern.
+</dd>
+<dt>void <em>setfillstyle</em> (int pattern, int color);</dt>
+<dd>Sets the fill pattern and fill colour.
+</dd>
+<dt>unsigned <em>setgraphbufsize</em> (unsigned bufsize);</dt>
+<dd>Unimplemented; not used by <em>SDL_bgi</em>.
+</dd>
+<dt>void <em>setgraphmode</em> (int mode);</dt>
+<dd>Shows the window that was hidden by <em>restorecrtmode</em>().
+</dd>
+<dt>void <em>setlinestyle</em> (int linestyle, unsigned upattern, int thickness);</dt>
+<dd>Sets the line width and style.
+</dd>
+<dt>void <em>setpalette</em> (int colornum, int color);</dt>
+<dd>Changes the standard palette <em>colornum</em> to <em>color</em>, which can also be specified using the <em>COLOR()</em> function.
+</dd>
+<dt>void <em>settextjustify</em> (int horiz, int vert);</dt>
+<dd>Sets text justification. Text output will be justified around the CP horizontally and vertically.
+</dd>
+<dt>void <em>settextstyle</em> (int font, int direction, int charsize);</dt>
+<dd>Sets the text style.
+</dd>
+<dt>void <em>setusercharsize</em> (int multx, int divx, int multy, int divy);</dt>
+<dd>Lets the user change the character width and height.
+</dd>
+<dt>void <em>setviewport</em> (int left, int top, int right, int bottom, int clip);</dt>
+<dd>Sets the current viewport for graphics output.
+</dd>
+<dt>void <em>setvisualpage</em> (int page);</dt>
+<dd>Sets the visual graphics page number to <em>page</em>.
+</dd>
+<dt>void <em>setwritemode</em> (int mode);</dt>
+<dd>Sets the writing mode for line drawing (COPY_PUT, etc.)
+</dd>
+<dt>int <em>textheight</em> (char *textstring);</dt>
+<dd>Returns the height in pixels <em>textstring</em>.
+</dd>
+<dt>int <em>textwidth</em> (char *textstring);</dt>
+<dd>Returns the width in pixels of <em>textstring</em>.
+</dd>
+</dl>
+<h2 id="sdl_bgi-extensions"><em>SDL_bgi</em> extensions</h2>
+<p> </p>
+<dl>
+<dt>int <em>ALPHA_VALUE</em> (int color);</dt>
+<dd>Returns the alpha (transparency) component of <em>color</em> in the ARGB palette.
+</dd>
+<dt>int <em>BLUE_VALUE</em> (int color);</dt>
+<dd>Returns the blue component of <em>color</em> in the ARGB palette.
+</dd>
+<dt>void <em>closewindow</em> (int id);</dt>
+<dd>Closes the window identified by <em>id</em>.
+</dd>
+<dt>int <em>COLOR</em> (int r, int g, int b);</dt>
+<dd>Can be used as an argument for <em>putpixel</em>(), <em>setalpha</em>(), <em>setcolor</em>(), <em>setbkcolor</em>(), <em>setfillpattern</em>(), and <em>setfillstyle</em>() to set a colour specifying its ARGB components.
+</dd>
+<dt>int <em>COLOR32</em> (Uint32 color);</dt>
+<dd>Can be used as an argument for <em>putpixel</em>(), <em>setalpha</em>(), <em>setcolor</em>(), <em>setbkcolor</em>(), <em>setfillpattern</em>(), and <em>setfillstyle</em>() to set a colour as ARGB integer.
+</dd>
+<dt>char * <em>colorname</em> (int color);</dt>
+<dd>Returns a string containing the colour name.
+</dd>
+<dt>Uint32 <em>colorRGB</em> (int r, int g, int b) (macro)</dt>
+<dd>Can be used to compose a 32 bit colour with <em>r</em> <em>g</em> <em>b</em> components.
+</dd>
+<dt>void <em>copysurface</em> (SDL_Surface *surface, int x1, int y1, int x2, int y2);</dt>
+<dd>Copies <em>surface</em> to the rectangle defined by <em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em>.
+</dd>
+<dt>int <em>doubleclick</em> (void);</dt>
+<dd>Returns 1 if the last mouse click was a double click.
+</dd>
+<dt>int <em>edelay</em> (int msec);</dt>
+<dd>Waits for <em>msec</em> milliseconds. This function returns 1 if an event occurs during the delay, otherwise it returns 0.
+</dd>
+<dt>int <em>event</em> (void);</dt>
+<dd>Returns 1 if an event (mouse click, key press, or <em>QUIT</em>) has occurred.
+</dd>
+<dt>int <em>eventtype</em> (void);</dt>
+<dd>Returns the type of the last event: <em>SDL_KEYDOWN</em>, <em>SDL_MOUSEMOTION</em>, <em>SDL_MOUSEBUTTONDOWN</em>, <em>SDL_MOUSEBUTTONUP</em>, <em>SDL_MOUSEWHEEL</em>, <em>SDL_QUIT</em>
+</dd>
+<dt>void <em>fputpixel</em> (int x, int y);</dt>
+<dd>Plots a point at (<em>x</em>, <em>y</em>) using the current drawing colour.
+</dd>
+<dt>void <em>getbuffer</em> (Uint32 *buffer);</dt>
+<dd>Copies the contents of the active window to <em>buffer</em>.
+</dd>
+<dt>int <em>getclick</em> (void);</dt>
+<dd>Waits for a mouse button click and returns its code.
+</dd>
+<dt>int <em>getcurrentwindow</em> (void);</dt>
+<dd>Returns the <em>id</em> of the current window.
+</dd>
+<dt>int <em>getevent</em> (void);</dt>
+<dd>Waits for a keypress, mouse click, or <em>SDL_QUIT</em> event, and returns the code of the key, mouse button, or <em>SDL_QUIT</em>.
+</dd>
+<dt>void <em>getleftclick</em> (void);</dt>
+<dd>Waits for the left mouse button to be clicked and released.
+</dd>
+<dt>void <em>getlinebuffer</em> (int y, Uint32 *linebuffer);</dt>
+<dd>Copies the <em>y</em>-th screen line to <em>linebuffer</em>.
+</dd>
+<dt>int <em>getmaxheight</em> (void);</dt>
+<dd>Returns the maximum possible height for a new window (actual screen height in pixels).
+</dd>
+<dt>int <em>getmaxwidth</em> (void);</dt>
+<dd>Returns the maximum possible width for a new window (actual screen width in pixels).
+</dd>
+<dt>void <em>getmiddleclick</em> (void);</dt>
+<dd>Waits for the middle mouse button to be clicked and released.
+</dd>
+<dt>void <em>getmouseclick</em> (int btn, int *x, int *y);</dt>
+<dd>Sets the <em>x</em>, <em>y</em> coordinates of the last <em>btn</em> button click expected by <em>ismouseclick</em>().
+</dd>
+<dt>void <em>getrgbpalette</em> (struct rgbpalettetype* palette, int size);</dt>
+<dd>Fills the <em>rgbpalettetype</em> structure pointed to by <em>palette</em> with information about the current ARGB palette’s <em>size</em> and colours.
+</dd>
+<dt>int <em>getrgbpalettesize</em> (void);</dt>
+<dd>Returns the current size of the ARGB palette.
+</dd>
+<dt>void <em>getrightclick</em> (void);</dt>
+<dd>Waits for the right mouse button to be clicked and released.
+</dd>
+<dt>void <em>getscreensize</em> (int *width, int *height);</dt>
+<dd>Reports the screen width and height in <em>width</em> and <em>height</em>, regardless of current window dimensions.
+</dd>
+<dt>void <em>getwindowheight</em> ();</dt>
+<dd>Equivalent to <em>getmaxy</em>() (WinBGIm compatibility).
+</dd>
+<dt>void <em>getwindowwidth</em> ();</dt>
+<dd>Equivalent to <em>getmaxx</em>() (WinBGIm compatibility).
+</dd>
+<dt>int <em>GREEN_VALUE</em> (int color);</dt>
+<dd>Returns the green component of <em>color</em> in the ARGB palette.
+</dd>
+<dt>void <em>initpalette</em> (void);</dt>
+<dd>Initialises the BGI palette to the standard 16 colours.
+</dd>
+<dt>int <em>initwindow</em> (int width, int height);</dt>
+<dd>Initializes the graphics system, opening a <em>width</em> x <em>height</em> window. Set <em>width</em> or <em>height</em> equal to 0 for fullscreen.
+</dd>
+<dt>int <em>IS_BGI_COLOR</em> (int color);</dt>
+<dd>Returns 1 if the <em>current</em> drawing colour is a standard BGI colour (that is, not ARGB). The <em>color</em> argument is actually redundant.
+</dd>
+<dt>int <em>ismouseclick</em> (int btn);</dt>
+<dd>Returns 1 if the <em>btn</em> mouse button was clicked.
+</dd>
+<dt>int <em>IS_RGB_COLOR</em> (int color);</dt>
+<dd>Returns 1 if the <em>current</em> drawing colour is ARGB. The <em>color</em> argument is actually redundant.
+</dd>
+<dt>int <em>kdelay</em> (int msec);</dt>
+<dd>Waits for <em>msec</em> milliseconds. This function returns 1 if a key is pressed during the delay, otherwise it returns 0.
+</dd>
+<dt>int <em>mouseclick</em> (void);</dt>
+<dd>Returns the code of the mouse button that is being clicked, or <em>SDL_MOUSEMOTION</em>, or 0.
+</dd>
+<dt>int <em>mousex</em> (void);</dt>
+<dd>Returns the <em>X</em> coordinate of the last mouse click.
+</dd>
+<dt>int <em>mousey</em> (void);</dt>
+<dd>Returns the <em>Y</em> coordinate of the last mouse click.
+</dd>
+<dt>void <em>putbuffer</em> (Uint32 *buffer);</dt>
+<dd>Copies <em>buffer</em> to the current window.
+</dd>
+<dt>void <em>putlinebuffer</em> (int y, Uint32 *linebuffer);</dt>
+<dd>Copies <em>linebuffer</em> to the <em>y</em> coordinate in the current window.
+</dd>
+<dt>void _putpixel* (int x, int y);</dt>
+<dd>Same as fputpixel().
+</dd>
+<dt>void <em>readimagefile</em> (char *filename, int x1, int y1, int x2, int y2);</dt>
+<dd>Reads a <em>.bmp</em> file and displays it immediately at (<em>x1</em>, <em>y1</em>).
+</dd>
+<dt>int <em>RED_VALUE</em> (int color);</dt>
+<dd>Returns the red component of <em>color</em> in the ARGB palette.
+</dd>
+<dt>void <em>refresh</em> (void);</dt>
+<dd>Updates the screen contents, i.e. displays all graphics.
+</dd>
+<dt>void <em>resetwinoptions</em> (int id, char *title, int x, int y);</dt>
+<dd>Resets title and position of window <em>id</em> to <em>title</em>, (<em>x</em>, <em>y</em>).
+</dd>
+<dt>int <em>resizepalette</em> (Uint32 newsize);</dt>
+<dd>Resizes the ARGB palette to <em>newsize</em>; returns 0 if successful, 1 otherwise.
+</dd>
+<dt>int <em>RGBPALETTE</em> (int color);</dt>
+<dd>Can be used as an argument for <em>putpixel</em>(), <em>setalpha</em>(), <em>setcolor</em>(), <em>setbkcolor</em>(), <em>setfillpattern</em>(), and <em>setfillstyle</em>() to set a colour from the ARGB palette <em>color</em> entry.
+</dd>
+<dt>void <em>sdlbgiauto</em> (void);</dt>
+<dd>Triggers <em>auto mode</em>, i.e. <em>refresh</em>() is performed automatically.
+</dd>
+<dt>void <em>sdlbgifast</em> (void);</dt>
+<dd>Triggers <em>fast mode</em>, i.e. <em>refresh</em>() is needed to display graphics.
+</dd>
+<dt>void <em>sdlbgislow</em> (void);</dt>
+<dd>Triggers <em>slow mode</em> i.e. <em>refresh</em>() is not needed to display graphics.
+</dd>
+<dt>void <em>setallrgbpalette</em> (struct rgbpalettetype *palette);</dt>
+<dd>Sets the current ARGB palette to the values given in <em>palette</em>.
+</dd>
+<dt>void <em>setalpha</em> (int col, Uint8 alpha);</dt>
+<dd>Sets alpha transparency for colour <em>col</em> to <em>alpha</em> (0-255); 0 means full transparecy, 255 full opacity.
+</dd>
+<dt>void <em>setbkrgbcolor</em> (int color);</dt>
+<dd>Sets the current background colour to the <em>color</em> entry in the ARGB palette.
+</dd>
+<dt>void <em>setblendmode</em> (int blendmode);</dt>
+<dd>Sets the blend mode to be used with screen refresh; either SDL_BLENDMODE_NONE or SDL_BLENDMODE_BLEND.
+</dd>
+<dt>void <em>setcurrentwindow</em> (int id);</dt>
+<dd>Sets the current active window to <em>id</em>.
+</dd>
+<dt>void <em>setrgbcolor</em> (int color);</dt>
+<dd>Sets the current drawing colour to the <em>color</em> entry in the ARGB palette.
+</dd>
+<dt>void <em>setrgbpalette</em> (int colornum, int red, int green, int blue);</dt>
+<dd>Sets the <em>colornum</em> entry in the ARGB palette specifying the <em>r</em>, <em>g</em>, and <em>b</em> components.
+</dd>
+<dt>void <em>setwinoptions</em> (char *title, int x, int y, Uint32 flags);</dt>
+<dd>Sets the window title <em>title</em>, the initial position to (<em>x</em>, <em>y</em>), and SDL2 flags OR’ed together.
+</dd>
+<dt>void <em>setwintitle</em> (int id, char *title);</dt>
+<dd>Sets the title of the window identified by <em>id</em>.
+</dd>
+<dt>void <em>showerrorbox</em> (const char *message);</dt>
+<dd>Opens an error message box with the specified message.
+</dd>
+<dt>void <em>showinfobox</em> (const char *message);</dt>
+<dd>Opens an information message box with the specified message.
+</dd>
+<dt>void <em>swapbuffers</em> (void);</dt>
+<dd>Swaps the current active and the current visual graphics pages.
+</dd>
+<dt>void <em>writeimagefile</em> (char *filename, int left, int top, int right, int bottom);</dt>
+<dd>Writes a <em>.bmp</em> file from the screen rectangle defined by <em>left</em>, <em>top</em>, <em>right</em>, <em>bottom</em>.
+</dd>
+<dt>int <em>xkbhit</em> (void);</dt>
+<dd>Returns 1 when any key is pressed, including special keys (Ctrl, Shift, etc.)
+</dd>
+</dl>
+<h1 id="environment">ENVIRONMENT</h1>
+<p>Native code and Python:</p>
+<p><em>SDL_BGI_RES</em>: when set to <em>VGA</em>, default resolution will be 640 x 480 instead of default 800 x 600.</p>
+<p><em>SDL_BGI_RATE</em>: when set to <em>auto</em>, automatic screen refresh will be performed.</p>
+<p><em>SDL_BGI_PALETTE</em>: when set to <em>BGI</em>, the first 16 colours will use the same RGB values as Turbo C 2.01.</p>
+<p>Compiling programs with <em>emscripten</em>, variables <em>SDL_BGI_RES</em> and <em>SDL_BGI_PALETTE</em> can be replaced by files by the same name, possibly containing the strings <em>VGA</em> and <em>BGI</em>.</p>
+<p>When run in a browser, the user can provide “environment files” in the assets directory. These text files have the same name as the corresponding environment variable, and contain the desired value (e.g. <em>VGA</em> for assets/SDL_BGI_RES).</p>
+<h1 id="known-bugs">KNOWN BUGS</h1>
+<ul>
+<li><p>Visualisation problems on NVIDIA GK208BM (GeForce 920M) with nvidia-driver-* on GNU/Linux. As far as I can say, this is an NVIDIA driver problem.</p></li>
+<li><p>On Raspios 10 ARM, the letter ‘p’ is drawn incorrectly in SCRIPT_FONT. This bug does not affect Raspios 10 i386.</p></li>
+</ul>
+<p>Please report bugs if you find any.</p>
+<h1 id="example">EXAMPLE</h1>
+<pre><code>#include &lt;graphics.h&gt;
+
+int main (int argc, char *argv[])
+{
+  int i, gd = DETECT, gm;
+  initgraph (&amp;gd, &amp;gm, &quot;&quot;);
+  setbkcolor (BLACK);
+  cleardevice ();
+  outtextxy (0, 0, &quot;Drawing 1000 lines...&quot;);
+  for (i = 0; i &lt; 1000; i++) {
+    setcolor (1 + random (15));
+    line (random(getmaxx()), random(getmaxy()),
+    random (getmaxx()), random(getmaxy()) );
+  }
+  getch ();
+  closegraph ();
+  return 0;
+}</code></pre>
+<p>To compile this program on GNU/Linux, macOS, or Raspios:</p>
+<pre><code>$ gcc -o program program.c -lSDL_bgi -lSDL2</code></pre>
+<p>To compile this program on MSYS2 + mingw-w64:</p>
+<pre><code>$ gcc -o program.exe program.c -lmingw32 -L/mingw64/bin \
+  -lSDL_bgi -lSDL2main -lSDL2 # -mwindows</code></pre>
+<p>To compile this program to WebAssembly using <em>emcc</em>:</p>
+<pre><code>$ emcc --emrun -o program.html program.c -lSDL_bgi \
+    -std=gnu99 -O2 -Wall -lm \
+    -s USE_SDL=2 -s ALLOW_MEMORY_GROWTH=1 -s ASYNCIFY -s SINGLE_FILE</code></pre>
+<p>To initialise the graphics, you may try one of the following methods:</p>
+<pre><code>// open a 400x300 window
+initwindow (400, 300);
+
+// open a 400x300 window, setting position, title, and flags
+setwinoptions (&quot;SDL_bgi window&quot;, 100, 100, SDL_WINDOW_BORDERLESS);
+initwindow (400, 300);
+
+// go fullscreen
+initwindow (0, 0);
+
+// go fullscreen or VGA if SDL_BGI_RES is set
+gd = DETECT;
+gm = getmaxmode ();
+initgraph(&amp;gd, &amp;gm, &quot;&quot;);
+
+// go fullscreen with non native resolution
+setwinoptions (&quot;&quot;, -1, -1, SDL_WINDOW_FULLSCREEN);
+initwindow (800, 600);</code></pre>
+<h1 id="authors">AUTHORS</h1>
+<p>Main library: Guido Gonzato, PhD <em>guido dot gonzato at gmail dot com</em></p>
+<p>Automatic refresh patch, CHR font support: Marco Diego Aurélio Mesquita, <em>marcodiegomesquita at gmail dot com</em></p>
+<h1 id="license">LICENSE</h1>
+<p><em>SDL_bgi</em> is released under the ZLib License. opyright (c) 2014-2022 Guido Gonzato, PhD</p>
+<p>This software is provided ‘as-is’, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.</p>
+<p>Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:</p>
+<ol type="1">
+<li>The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.</li>
+<li>Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.</li>
+<li>This notice may not be removed or altered from any source distribution.</li>
+</ol>
