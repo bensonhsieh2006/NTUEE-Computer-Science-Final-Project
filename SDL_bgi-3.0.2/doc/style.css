@@ -1,0 +1,59 @@
+  body {
+    font-family: 'Verdana','Helvetica', 'Arial', sans-serif;
+    font-size: 1.2em;
+    background: #6699cc;
+    color: black;
+  }
+
+  div.body {
+    background: #fafafa;
+    color: black;
+    width: 800;
+    margin: 40 40 40 40;
+    padding: 30;
+    font-family: 'Verdana','Helvetica', 'Arial', sans-serif;
+    font-size: 0.85em;
+    line-height: 1.4em;
+    border-width: 2 2 2 2;
+    border-style: solid;
+    border-color: lightgray;
+    margin: 0 auto;
+  }
+  
+  p {
+    text-indent: 30;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 1.2em;
+    color: darkblue;
+    text-align: left;
+    font-family: 'Verdana','Helvetica', 'Arial', sans-serif;
+    padding-top: 15;
+  }
+  
+  h1 { font-size: 2em; }
+  h2 { font-size: 1.6em; }
+  h3 { font-size: 1.2em; }
+  h4 { font-size: 1.1em; }
+  
+  A:link    { color: darkblue; }
+  A:visited { color: darkred; }
+  A:hover   { color: black; background: yellow; }
+  
+  ul,ol {
+    padding-top: 2;
+    padding-bottom: 2;
+  }
+  
+  li {
+    padding-bottom: 1;
+  }
+  
+  table {
+    font-family: sans-serif;
+    font-size: 0.9em;
+    text-align:left;
+    border-collapse: collapse;
+  }

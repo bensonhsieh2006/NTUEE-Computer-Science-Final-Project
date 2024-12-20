@@ -1,0 +1,20 @@
+#!/bin/sh
+
+MYSELF=$(basename $0)
+
+if [ $# -eq 0 ] ; then
+  printf "Usage: ${MYSELF} <program.c>\n"
+  exit 1
+fi
+
+OS=$(uname | cut -b -7)
+
+if [ "MINGW64x" = ${OS}x ] ; then
+  LIBS="-lmingw32 -L/ucrt64/bin -lSDL_bgi -lSDL2main -lSDL2"
+else # GNU/Linux, macOS
+  LIBS="-lSDL_bgi -lSDL2"
+fi
+
+FILE=$(basename $1 .c)
+echo "executing 'gcc -o $FILE $FILE.c $LIBS'"
+gcc -o $FILE $FILE.c $LIBS

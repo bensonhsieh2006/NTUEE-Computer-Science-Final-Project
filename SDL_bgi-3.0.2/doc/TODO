@@ -1,0 +1,2 @@
+- make PALETTE_SIZE a read-only variable
+- default values in set*
