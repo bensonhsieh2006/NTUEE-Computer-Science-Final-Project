@@ -15,9 +15,9 @@ button::~button()
     sound = NULL;
 }
 
-bool button::handle(SDL_Event* e, int &controlNum)
+bool button::handle(SDL_Event &e, int &controlNum)
 {
-    if (e->type == SDL_MOUSEBUTTONDOWN)
+    if (e.type == SDL_MOUSEBUTTONDOWN)
     {
         int xnow, ynow;
         SDL_GetMouseState(&xnow, &ynow);

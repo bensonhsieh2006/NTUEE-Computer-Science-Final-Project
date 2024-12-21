@@ -147,7 +147,7 @@ int main( int argc, char* args[] ){
             {
                 quit = true;
             }
-            if(buttons[MAIN]->handle( &e, controlNum )){
+            if(buttons[MAIN]->handle( e, controlNum )){
                 loaded = !loaded;
             }
         }

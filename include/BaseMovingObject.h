@@ -1,33 +1,49 @@
 #ifndef BASEMOVINGOBJECT_H
 #define BASEMOVINGOBJECT_H
 
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
+
+#include <SDL.h>
+#include <SDL_bgi.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
+
+#include <string>
+
 
 class BaseMovingObject
 {
     public:
-        BaseMovingObject();
+        BaseMovingObject(int, int);
         virtual ~BaseMovingObject();
 
-        int Getcx() { return cx; }
+        /*int Getcx() { return cx; }
         void Setcx(int val) { cx = val; }
         int Getcy() { return cy; }
         void Setcy(int val) { cy = val; }
         int Getvcx() { return vcx; }
         void Setvcx(int val) { vcx = val; }
         int Getvcy() { return vcy; }
-        void Setvcy(int val) { vcy = val; }
+        void Setvcy(int val) { vcy = val; }*/
 
+        virtual bool loadPic(std::string c, SDL_Renderer* &r);
         void move();
+        void handle( SDL_Event &e );
+        void render(SDL_Renderer* &r);
 
     protected:
 
     private:
+        int v;
         int cx;
         int cy;
         int vcx;
         int vcy;
         int objWidth;
         int objHeight;
+        SDL_Texture* cTexture = NULL;
 };
 
 #endif // BASEMOVINGOBJECT_H

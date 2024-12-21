@@ -14,7 +14,7 @@ class button
     public:
         button(int, int, int, int, int);
         virtual ~button();
-        bool handle(SDL_Event *, int&);
+        bool handle(SDL_Event &, int &);
         void setDetectArea(int, int, int, int);
 
     protected:
