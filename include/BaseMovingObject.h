@@ -16,7 +16,7 @@
 class BaseMovingObject
 {
     public:
-        BaseMovingObject(int, int);
+        BaseMovingObject(int, int, int);
         virtual ~BaseMovingObject();
 
         /*int Getcx() { return cx; }
@@ -28,7 +28,7 @@ class BaseMovingObject
         int Getvcy() { return vcy; }
         void Setvcy(int val) { vcy = val; }*/
 
-        virtual bool loadPic(std::string c, SDL_Renderer* &r);
+        virtual bool loadPic(std::string c, SDL_Renderer* &r) = 0;
         void move();
         void handle( SDL_Event &e );
         void render(SDL_Renderer* &r);
@@ -37,10 +37,10 @@ class BaseMovingObject
 
     private:
         int v;
-        int cx;
-        int cy;
-        int vcx;
-        int vcy;
+        int posX;
+        int posY;
+        int vX;
+        int vY;
         int objWidth;
         int objHeight;
         SDL_Texture* cTexture = NULL;

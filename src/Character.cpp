@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(): BaseMovingObject(130, 200)
+Character::Character(): BaseMovingObject(130, 200, 0)
 {
     //ctor
 }
@@ -10,6 +10,6 @@ Character::~Character()
     //dtor
 }
 
-void Character::loadPic(std::string c, SDL_Renderer* &r){
-
+bool Character::loadPic(std::string c, SDL_Renderer* &r){
+    return 1;
 }

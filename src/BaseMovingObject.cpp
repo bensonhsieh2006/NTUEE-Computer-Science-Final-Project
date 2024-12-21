@@ -1,6 +1,6 @@
 #include "BaseMovingObject.h"
 
-BaseMovingObject::BaseMovingObject(int width, int height, int _v = 0): v(_v), objWidth(width), objHeight(height)
+BaseMovingObject::BaseMovingObject(int width, int height, int _v): v(_v), objWidth(width), objHeight(height)
 {
     //ctor
 }
@@ -14,13 +14,13 @@ BaseMovingObject::~BaseMovingObject()
 }
 
 void BaseMovingObject::move(){
-    cx += vcx;
-    if((cx < 0) || (cx + objWidth > SCREEN_WIDTH)){
-        cx -= vcx;
+    posX += vX;
+    if((posX < 0) || (posX + objWidth > SCREEN_WIDTH)){
+        posX -= vX;
     }
-    cy = cy + vcy;
-    if((cx > 0) || (cy + objHeight > SCREEN_HEIGHT)){
-        cy -= vcy;
+    posY += vY;
+    if((posY < 0) || (posX + objHeight > SCREEN_HEIGHT)){
+        posX  -= vX;
     }
 }
 
@@ -28,10 +28,10 @@ void BaseMovingObject::handle(SDL_Event &e){
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0){
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: vcy -= v; break;
-            case SDLK_DOWN: vcy += v; break;
-            case SDLK_LEFT: vcx -= v; break;
-            case SDLK_RIGHT: vcx += v; break;
+            case SDLK_UP: vY -= v; break;
+            case SDLK_DOWN: vY += v; break;
+            case SDLK_LEFT: vX -= v; break;
+            case SDLK_RIGHT: vX += v; break;
         }
     }
 
@@ -39,16 +39,17 @@ void BaseMovingObject::handle(SDL_Event &e){
     {
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: vcy += v; break;
-            case SDLK_DOWN: vcx -= v; break;
-            case SDLK_LEFT: vcx += v; break;
-            case SDLK_RIGHT: vcx -= v; break;
+            case SDLK_UP: vY += v; break;
+            case SDLK_DOWN: vY -= v; break;
+            case SDLK_LEFT: vX += v; break;
+            case SDLK_RIGHT: vX -= v; break;
         }
     }
 }
 
 void BaseMovingObject::render(SDL_Renderer* &r){
-    SDL_Rect pos = {cx, cy, objWidth, objHeight}
-    SDL_RenderCopy(r, cTexture, NULL, pos);
+    SDL_Rect pos = {posX, posY, objWidth, objHeight};
+    SDL_RenderCopy(r, cTexture, NULL, &pos);
 }
+
 

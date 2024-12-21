@@ -6,7 +6,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
-
+#include <BaseMovingObject.h>
 #include <string>
 
 class Character: public BaseMovingObject
@@ -14,7 +14,7 @@ class Character: public BaseMovingObject
     public:
         Character();
         virtual ~Character();
-        void loadPic(string c, SDL_Renderer* &r);
+        bool loadPic(std::string c, SDL_Renderer* &r);
 
     protected:
 
