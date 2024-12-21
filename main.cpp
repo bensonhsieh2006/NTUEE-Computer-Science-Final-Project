@@ -129,7 +129,7 @@ int main( int argc, char* args[] ){
     button **buttons;
     buttons = new button* [BUTTNUM];
 
-    buttons[0] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
+    buttons[MAIN] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
     bool loaded = false;
     bool quit = false;
     //Event handler

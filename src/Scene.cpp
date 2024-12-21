@@ -225,6 +225,32 @@ void Scene::renderMainpage(SDL_Renderer* &r, int &controlNum, bool &loaded){
     SDL_RenderCopyF( r, extendedTexture4, NULL, &viewport );
 }
 
+void Scene::loadStageOne(SDL_Renderer* &r){
+    free();
+
+}
+
+void Scene::renderStageOne(SDL_Renderer* &r, int &controlNum, bool &loaded){
+    return;
+}
+
+void Scene::loadStageTwo(SDL_Renderer* &r){
+    free();
+
+}
+
+void Scene::renderStageTwo(SDL_Renderer* &r, int &controlNum, bool &loaded){
+    return;
+}
+
+void Scene::loadStageThree(SDL_Renderer* &r){
+    free();
+}
+
+void Scene::renderStageThree(SDL_Renderer* &r, int &controlNum, bool &loaded){
+    return;
+}
+
 void Scene::free(){
     if(backgroundTexture != NULL){
         SDL_DestroyTexture(backgroundTexture);

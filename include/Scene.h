@@ -19,12 +19,19 @@ class Scene
         bool loadPic(std::string, int, SDL_Renderer* &);
         bool loadText( std::string textureText, SDL_Color textColor, SDL_Renderer* & );
         void setViewport(float, float, float, float);
+
         void loadStart(SDL_Renderer* &);
         void renderStart(SDL_Renderer* &);
         void loadStory(SDL_Renderer* &);
         void renderStory(SDL_Renderer* &, int&, bool&);
         void loadMainpage(SDL_Renderer* &);
         void renderMainpage(SDL_Renderer*&, int&, bool&);
+        void loadStageOne(SDL_Renderer* &);
+        void renderStageOne(SDL_Renderer* &, int &, bool &);
+        void loadStageTwo(SDL_Renderer* &);
+        void renderStageTwo(SDL_Renderer* &, int &, bool &);
+        void loadStageThree(SDL_Renderer* &);
+        void renderStageThree(SDL_Renderer* &, int &, bool &);
         void free();
 
     protected:
