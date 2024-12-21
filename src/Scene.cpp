@@ -2,7 +2,7 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-Scene::Scene()
+Scene::Scene(): poll(CharacterPoll(100))
 {
     //ctor
     backgroundTexture = NULL;
@@ -29,6 +29,7 @@ Scene::~Scene()
     TTF_CloseFont(gFont);
     gFont = NULL;
 }
+
 
 bool Scene::loadPic(std::string c,int textureID, SDL_Renderer* &gRenderer)
 {
@@ -205,7 +206,7 @@ void Scene::loadMainpage(SDL_Renderer* &r){
     loadPic("imgs/stage03.png",5,r);
 }
 
-void Scene::renderMainpage(SDL_Renderer* &r, int &controlNum, bool &loaded){
+void Scene::renderMainpage(SDL_Renderer* &r){
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
 
@@ -227,28 +228,127 @@ void Scene::renderMainpage(SDL_Renderer* &r, int &controlNum, bool &loaded){
 
 void Scene::loadStageOne(SDL_Renderer* &r){
     free();
+    loadPic("imgs/stage1background.png",0,r);
 
 }
 
-void Scene::renderStageOne(SDL_Renderer* &r, int &controlNum, bool &loaded){
+void Scene::renderStageOne(SDL_Renderer* &r){
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
     return;
 }
 
 void Scene::loadStageTwo(SDL_Renderer* &r){
     free();
-
+    loadPic("imgs/stage2background.png",0,r);
 }
 
-void Scene::renderStageTwo(SDL_Renderer* &r, int &controlNum, bool &loaded){
+void Scene::renderStageTwo(SDL_Renderer* &r){
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
     return;
 }
 
 void Scene::loadStageThree(SDL_Renderer* &r){
     free();
+    loadPic("imgs/stage3background.png",0,r);
 }
 
-void Scene::renderStageThree(SDL_Renderer* &r, int &controlNum, bool &loaded){
+void Scene::renderStageThree(SDL_Renderer* &r){
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
     return;
+}
+
+void Scene::loadGacha(SDL_Renderer* &r, int Dnum)
+{
+    free();
+    SDL_Color textColor = { 0, 0, 0 };
+    loadPic("imgs/mainpage.png", 0, r);
+    loadPic("imgs/diamondnum.png", 1, r);
+    loadPic("imgs/x1button.png", 2, r);
+    loadPic("imgs/x11button.png", 3, r);
+    loadPic("imgs/return.png", 4, r);
+    loadText(std::to_string(Dnum), textColor, r);
+}
+
+void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
+{
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/5*3, 0, SCREEN_WIDTH/5*2, SCREEN_HEIGHT/8);
+    SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/4, SCREEN_HEIGHT/5*3.2, SCREEN_WIDTH/4, SCREEN_WIDTH/5);
+    SDL_RenderCopyF(r, extendedTexture1, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/4*2, SCREEN_HEIGHT/5*3.2, SCREEN_WIDTH/4, SCREEN_WIDTH/5);
+    SDL_RenderCopyF(r, extendedTexture2, NULL, &viewport);
+
+    setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
+    SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/20*15, 5, SCREEN_WIDTH/6/5*(int)(log10(Dnum+1)+1), SCREEN_HEIGHT/9);
+    SDL_RenderCopyF(r, textTexture, NULL, &viewport);
+}
+
+void Scene::loadGachaX1(SDL_Renderer* &r)
+{
+    free();
+    loadPic("imgs/mainpage.png", 0, r);
+    loadPic("imgs/no money.png", 1, r);
+    loadPic("imgs/character1.png", 2, r);
+    loadPic("imgs/testcharacter2.png", 3, r);
+    loadPic("imgs/testcharacter3.png", 4, r);
+}
+
+void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool & hasgacha)
+{
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
+
+    if (Dnum < 100 && (!hasgacha))
+    {
+        setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
+        SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
+        return;
+    }
+    else if (!hasgacha)
+    {
+        poll.getone();
+        Dnum -= 100;
+        hasgacha = true;
+    }
+    setViewport(SCREEN_WIDTH/4, SCREEN_HEIGHT/4, 130, 200);
+    //std::cout<<got<<std::endl;
+    switch (poll.onegot)
+    {
+    case (0):
+        SDL_RenderCopyF(r, extendedTexture1, NULL, &viewport); break;
+    case (1):
+        SDL_RenderCopyF(r, extendedTexture2, NULL, &viewport); break;
+    case (2):
+        SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport); break;
+    }
+}
+
+void Scene::loadGachaX11(SDL_Renderer* &r)
+{
+    free();
+    loadPic("imgs/mainpage.png", 0, r);
+    loadPic("imgs/no money.png", 1, r);
+}
+
+void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum)
+{
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
+    if (Dnum < 1000)
+    {
+        setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
+        SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
+    }
 }
 
 void Scene::free(){

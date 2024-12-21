@@ -22,6 +22,12 @@ bool Monster::loadPic(SDL_Renderer* &r)
         //Load image at specified path
         loadedSurface = IMG_Load("imgs/monster1.png");
         break;
+    case (2):
+        loadedSurface = IMG_Load("imgs/monster2.png");
+        break;
+    case (3):
+        loadedSurface = IMG_Load("imgs/monster3.png");
+        break;
     }
 
 	if( loadedSurface == NULL )

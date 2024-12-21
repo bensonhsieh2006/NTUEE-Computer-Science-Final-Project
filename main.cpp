@@ -27,7 +27,9 @@ enum scene_order{
     STAGE1 = 4,
     STAGE2 = 5,
     STAGE3 = 6,
-    SCENEGACHA = 7
+    SCENEGACHA = 7,
+    GACHAX1 = 8,
+    GACHAX11 = 9
 };
 
 enum button_name{
@@ -138,8 +140,10 @@ int main( int argc, char* args[] ){
     buttons[MAIN] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
     bool loaded = false;
     bool quit = false;
+    bool hasgacha = false;
 
     GamePlay *gp = NULL;
+    int diamondnum = 9999;
 
     //Event handler
     SDL_Event e;
@@ -198,25 +202,132 @@ int main( int argc, char* args[] ){
                     buttnow = 5;
                     loaded = true;
                 }
-                sceneTexture->renderMainpage(gRenderer, controlNum, loaded);
+                sceneTexture->renderMainpage(gRenderer);
                 break;
             case(STAGE1):
-
                 if(!loaded)
                 {
                     for (int i=0;i<buttnow;i++)
                     {
-                        delete buttons[i];
-                        buttons[i] = NULL;
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
                     }
                     buttnow = 0;
+                    sceneTexture->loadStageOne(gRenderer);
 
                     gp = new GamePlay(0, 1); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
                 }
-                //chi->handle(e);
+                sceneTexture->renderStageOne(gRenderer);
                 gp->render(gRenderer);
+                break;
+
+            case(STAGE2):
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttnow = 0;
+                    sceneTexture->loadStageTwo(gRenderer);
+
+                    gp = new GamePlay(0, 2); //characterID, stage
+                    gp->load(gRenderer);
+                    loaded = true;
+                }
+                sceneTexture->renderStageTwo(gRenderer);
+                gp->render(gRenderer);
+                break;
+
+            case(STAGE3):
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttnow = 0;
+                    sceneTexture->loadStageThree(gRenderer);
+
+                    gp = new GamePlay(0, 3); //characterID, stage
+                    gp->load(gRenderer);
+                    loaded = true;
+                }
+                sceneTexture->renderStageThree(gRenderer);
+                gp->render(gRenderer);
+                break;
+
+            case (SCENEGACHA):
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttons[MAIN] = new button(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, MAINPAGE);
+                    buttons[STAGEONE] = new button(SCREEN_WIDTH/4, SCREEN_HEIGHT/5*3.2, SCREEN_WIDTH/4, SCREEN_WIDTH/5, GACHAX1);
+                    buttons[STAGETWO] = new button(SCREEN_WIDTH/4*2, SCREEN_HEIGHT/5*3.2, SCREEN_WIDTH/4, SCREEN_WIDTH/5, GACHAX11);
+                    buttnow = 3;
+                    sceneTexture->loadGacha(gRenderer, diamondnum);
+                    hasgacha = false;
+                    loaded = true;
+                }
+                sceneTexture->renderGacha(gRenderer, diamondnum);
+                break;
+
+            case (GACHAX1):
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttons[MAIN] = new button(0, 0, SCREEN_WIDTH, SCREEN_WIDTH, SCENEGACHA);
+                    buttnow = 1;
+                    sceneTexture->loadGachaX1(gRenderer);
+                    loaded = true;
+                }
+                sceneTexture->renderGachaX1(gRenderer, diamondnum, hasgacha);
+                if (!hasgacha) hasgacha = true;
+                break;
+            case (GACHAX11):
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttons[MAIN] = new button(0, 0, SCREEN_WIDTH, SCREEN_WIDTH, SCENEGACHA);
+                    buttnow = 1;
+                    sceneTexture->loadGachaX11(gRenderer);
+                    loaded = true;
+                }
+                sceneTexture->renderGachaX11(gRenderer, diamondnum);
                 break;
         }
         //Update screen

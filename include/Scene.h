@@ -7,9 +7,11 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include"CharacterPoll.h"
 
 #include <string>
 #include <stdio.h>
+#include <cmath>
 
 class Scene
 {
@@ -25,13 +27,20 @@ class Scene
         void loadStory(SDL_Renderer* &);
         void renderStory(SDL_Renderer* &, int&, bool&);
         void loadMainpage(SDL_Renderer* &);
-        void renderMainpage(SDL_Renderer*&, int&, bool&);
+        void renderMainpage(SDL_Renderer*&);
         void loadStageOne(SDL_Renderer* &);
-        void renderStageOne(SDL_Renderer* &, int &, bool &);
+        void renderStageOne(SDL_Renderer* &);
         void loadStageTwo(SDL_Renderer* &);
-        void renderStageTwo(SDL_Renderer* &, int &, bool &);
+        void renderStageTwo(SDL_Renderer* &);
         void loadStageThree(SDL_Renderer* &);
-        void renderStageThree(SDL_Renderer* &, int &, bool &);
+        void renderStageThree(SDL_Renderer* &);
+        void loadGacha(SDL_Renderer* &, int);
+        void renderGacha(SDL_Renderer* &, int);
+        void loadGachaX1(SDL_Renderer* &);
+        void renderGachaX1(SDL_Renderer* &, int &, bool &);
+        void loadGachaX11(SDL_Renderer* &);
+        void renderGachaX11(SDL_Renderer* &, int &);
+
         void free();
 
     protected:
@@ -41,7 +50,7 @@ class Scene
         SDL_Texture *extendedTexture1,*extendedTexture2, *extendedTexture3,*extendedTexture4,*extendedTexture5;
         SDL_FRect viewport;
         TTF_Font* gFont;
-
+        CharacterPoll poll;
 };
 
 #endif // SCENE_H
