@@ -26,7 +26,7 @@ bool button::handle(int &controlNum)
     if (ynow > position.y + height) return 0;
 
     Mix_PlayChannel(-1,sound,0);
-    std::cout << "sound played" << std::endl;
+    //std::cout << "sound played" << std::endl;
     controlNum  = destNum;
     return 1;
 }
