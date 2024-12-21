@@ -8,8 +8,9 @@
 
 #include "Scene.h"
 #include "button.h"
+#include "GamePlay.h"
 
-#define BUTTNUM 6
+#define BUTTMAX 5
 
 using namespace std;
 
@@ -21,16 +22,20 @@ int controlNum = 0;
 enum scene_order{
     OPENING = 0,
     STORY = 1,
-    MAINPAGE = 2
+    MAINPAGE = 2,
+    TEAM = 3,
+    STAGE1 = 4,
+    STAGE2 = 5,
+    STAGE3 = 6,
+    SCENEGACHA = 7
 };
 
 enum button_name{
-    MAIN = 0,
+    MAIN = 0,      //main, team
     STAGEONE = 1,
     STAGETWO = 2,
     STAGETHREE = 3,
     GACHA = 4,
-    TEAM = 5
 };
 
 SDL_Window* gWindow = NULL;
@@ -126,16 +131,21 @@ int main( int argc, char* args[] ){
     }
     Scene *sceneTexture = NULL;
     sceneTexture = new Scene();
+    int buttnow = 1;
     button **buttons;
-    buttons = new button* [BUTTNUM];
+    buttons = new button* [BUTTMAX];
 
     buttons[MAIN] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
     bool loaded = false;
     bool quit = false;
+
+    GamePlay *gp = NULL;
+
     //Event handler
     SDL_Event e;
 
     sceneTexture->loadStart(gRenderer);
+    loaded = true;
 
     while( !quit )
     {
@@ -147,8 +157,18 @@ int main( int argc, char* args[] ){
             {
                 quit = true;
             }
-            if(buttons[MAIN]->handle( e, controlNum )){
-                loaded = !loaded;
+            if (e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                for (int i=0;i<buttnow;i++)
+                {
+                    if(buttons[i]->handle( controlNum )){
+                    loaded = !loaded;
+                    }
+                }
+            }
+
+            if(gp != NULL){
+                gp->handle_keyboard(e);
             }
         }
         //Clear screen
@@ -168,27 +188,45 @@ int main( int argc, char* args[] ){
                 break;
             case(MAINPAGE):
                 if(!loaded){
-                    sceneTexture->loadMainpage(gRenderer);/*
+                    sceneTexture->loadMainpage(gRenderer);
                     delete buttons[MAIN];
-                    buttons[STAGEONE] = new button();
-                    buttons[STAGETWO] = new button();
-                    buttons[STAGETHREE] = new button();
-                    buttons[GACHA] = new button();
-                    buttons[TEAM] = new button();*/
+                    buttons[MAIN] = new button(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, TEAM); //team
+                    buttons[STAGEONE] = new button(SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5, STAGE1);
+                    buttons[STAGETWO] = new button(SCREEN_WIDTH/5*2, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5, STAGE2);
+                    buttons[STAGETHREE] = new button(SCREEN_WIDTH/5*3, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5, STAGE3);
+                    buttons[GACHA] = new button(SCREEN_WIDTH/10, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, SCENEGACHA);
+                    buttnow = 5;
                     loaded = true;
                 }
                 sceneTexture->renderMainpage(gRenderer, controlNum, loaded);
+                break;
+            case(STAGE1):
+
+                if(!loaded)
+                {
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        delete buttons[i];
+                        buttons[i] = NULL;
+                    }
+                    buttnow = 0;
+
+                    gp = new GamePlay(0, 1); //characterID, stage
+                    gp->load(gRenderer);
+                    loaded = true;
+                }
+                //chi->handle(e);
+                gp->render(gRenderer);
                 break;
         }
         //Update screen
         SDL_RenderPresent( gRenderer );
     }
     delete sceneTexture;
-    /*for (int i=0;i<BUTTNUM;i++)
+    for (int i=0;i<buttnow;i++)
     {
         delete buttons[i];
-    }*/
-    delete buttons[0];
+    }
     delete [] buttons;
     close();
     return 0;

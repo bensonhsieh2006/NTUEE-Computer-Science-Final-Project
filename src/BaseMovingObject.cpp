@@ -1,6 +1,8 @@
 #include "BaseMovingObject.h"
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
 
-BaseMovingObject::BaseMovingObject(int width, int height, int _v): v(_v), objWidth(width), objHeight(height)
+BaseMovingObject::BaseMovingObject(int width, int height, int _vx, int _vy): vX(_vx), vY(_vy), objWidth(width), objHeight(height)
 {
     //ctor
 }
@@ -19,32 +21,33 @@ void BaseMovingObject::move(){
         posX -= vX;
     }
     posY += vY;
-    if((posY < 0) || (posX + objHeight > SCREEN_HEIGHT)){
-        posX  -= vX;
+    if((posY < 0) || (posY + objHeight > SCREEN_HEIGHT)){
+        posY  -= vY;
     }
 }
 
 void BaseMovingObject::handle(SDL_Event &e){
+    move();
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0){
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: vY -= v; break;
-            case SDLK_DOWN: vY += v; break;
-            case SDLK_LEFT: vX -= v; break;
-            case SDLK_RIGHT: vX += v; break;
+            case SDLK_w: vY -= v; break;
+            case SDLK_s: vY += v; break;
+            case SDLK_a: vX -= v; break;
+            case SDLK_d: vX += v; break;
         }
     }
-
     else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
     {
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: vY += v; break;
-            case SDLK_DOWN: vY -= v; break;
-            case SDLK_LEFT: vX += v; break;
-            case SDLK_RIGHT: vX -= v; break;
+            case SDLK_w: vY += v; break;
+            case SDLK_s: vY -= v; break;
+            case SDLK_a: vX += v; break;
+            case SDLK_d: vX -= v; break;
         }
     }
+
 }
 
 void BaseMovingObject::render(SDL_Renderer* &r){

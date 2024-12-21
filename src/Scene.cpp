@@ -176,7 +176,7 @@ void Scene::loadStory(SDL_Renderer* &r){
 }
 
 void Scene::renderStory(SDL_Renderer* &r, int &controlNum, bool &loaded){
-    static float textheight = SCREEN_HEIGHT*1.1;
+    static float textheight = SCREEN_HEIGHT*1.05;
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
 
@@ -186,7 +186,7 @@ void Scene::renderStory(SDL_Renderer* &r, int &controlNum, bool &loaded){
     setViewport(SCREEN_WIDTH/20*18, SCREEN_HEIGHT/20, SCREEN_WIDTH/15, SCREEN_HEIGHT/15);
     SDL_RenderCopyF( r, textTexture, NULL, &viewport );
 
-    textheight -= 0.05;
+    textheight -= SCREEN_HEIGHT/7200.0;
 //    std::cout<<textheight<<std::endl;
     if (textheight < -900)
     {

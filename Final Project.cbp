@@ -49,9 +49,17 @@
 			<Add directory="SDL2_mixer-2.8.0/x86_64-w64-mingw32/bin" />
 			<Add directory="SDL2_ttf-2.22.0/x86_64-w64-mingw32/bin" />
 		</Linker>
+		<Unit filename="include/BaseMovingObject.h" />
+		<Unit filename="include/Character.h" />
+		<Unit filename="include/GamePlay.h" />
+		<Unit filename="include/Monster.h" />
 		<Unit filename="include/Scene.h" />
 		<Unit filename="include/button.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/BaseMovingObject.cpp" />
+		<Unit filename="src/Character.cpp" />
+		<Unit filename="src/GamePlay.cpp" />
+		<Unit filename="src/Monster.cpp" />
 		<Unit filename="src/Scene.cpp" />
 		<Unit filename="src/button.cpp" />
 		<Extensions>

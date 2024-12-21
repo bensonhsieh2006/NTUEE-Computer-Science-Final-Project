@@ -1,26 +1,26 @@
-#include "Character.h"
+#include "Monster.h"
 
-Character::Character(int i): BaseMovingObject(98, 150, 0, 0), id(i)
+Monster::Monster(int i) :BaseMovingObject(200, 200, 0, 0), monid(i)
 {
     //ctor
-    v = 15;
-    posX = 500;
-    posY = 300;
+    posX = 300;
+    posY = 0;
 }
 
-Character::~Character()
+Monster::~Monster()
 {
     //dtor
 }
 
-bool Character::loadPic(SDL_Renderer* &r){
+bool Monster::loadPic(SDL_Renderer* &r)
+{
     //Loading success flag
 	bool success = true;
     SDL_Surface* loadedSurface=NULL;
-    switch (id){
-    case (0):
+    switch (monid){
+    case (1):
         //Load image at specified path
-        loadedSurface = IMG_Load("imgs/character1.png");
+        loadedSurface = IMG_Load("imgs/monster1.png");
         break;
     }
 

@@ -15,22 +15,20 @@ button::~button()
     sound = NULL;
 }
 
-bool button::handle(SDL_Event &e, int &controlNum)
+bool button::handle(int &controlNum)
 {
-    if (e.type == SDL_MOUSEBUTTONDOWN)
-    {
-        int xnow, ynow;
-        SDL_GetMouseState(&xnow, &ynow);
+    int xnow, ynow;
+    SDL_GetMouseState(&xnow, &ynow);
 
-        bool inside = true;
-        if (xnow < position.x || (xnow > position.x + width) || (ynow < position.y) || (ynow > position.y + height)) inside = false;
+    if (xnow < position.x) return 0;
+    if (xnow > position.x + width) return 0;
+    if (ynow < position.y) return 0;
+    if (ynow > position.y + height) return 0;
 
-        if (inside) {
-            controlNum  = destNum;
-            Mix_PlayChannel(-1,sound,0);
-            return 1;
-        }
-    }
+    Mix_PlayChannel(-1,sound,0);
+    std::cout << "sound played" << std::endl;
+    controlNum  = destNum;
+    return 1;
 }
 
 void button::setDetectArea(int _x, int _y, int _w, int _h){
