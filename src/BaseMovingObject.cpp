@@ -15,19 +15,26 @@ BaseMovingObject::~BaseMovingObject()
     }
 }
 
-void BaseMovingObject::move(){
+bool BaseMovingObject::move(){
+    bool collided = false;
     posX += vX;
     if((posX < 0) || (posX + objWidth > SCREEN_WIDTH)){
         posX -= vX;
+        collided = true;
     }
     posY += vY;
-    if((posY < 0) || (posY + objHeight > SCREEN_HEIGHT)){
+    if((posY < SCREEN_HEIGHT/20) || (posY + objHeight > SCREEN_HEIGHT)){
         posY  -= vY;
+        collided = true;
     }
+
+    collisionRect.x = posX;
+    collisionRect.y = posY;
+    return collided;
 }
 
 void BaseMovingObject::handle(SDL_Event &e){
-    move();
+
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0){
         switch( e.key.keysym.sym )
         {
@@ -47,12 +54,21 @@ void BaseMovingObject::handle(SDL_Event &e){
             case SDLK_d: vX -= v; break;
         }
     }
+    move();
 
 }
 
 void BaseMovingObject::render(SDL_Renderer* &r){
     SDL_Rect pos = {posX, posY, objWidth, objHeight};
     SDL_RenderCopy(r, cTexture, NULL, &pos);
+}
+
+bool BaseMovingObject::checkCollision(SDL_Rect &rect){
+    if ((collisionRect.y + collisionRect.h) <= rect.y) return false;
+    if (collisionRect.y >= (rect.y + rect.h)) return false;
+    if ((collisionRect.x + collisionRect.w) <= rect.x) return false;
+    if (collisionRect.x >= (rect.x + rect.w)) return false;
+    return true;
 }
 
 

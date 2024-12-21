@@ -16,7 +16,12 @@ using namespace std;
 
 int SCREEN_WIDTH = 1080;
 int SCREEN_HEIGHT = 720;
+int SCREEN_FPS = 60;
+int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
+Uint32 cur_tick, frame_tick;
+int count_cd = 0, count_mon_shoot = 0;
 int controlNum = 0;
+
 
 
 enum scene_order{
@@ -149,6 +154,9 @@ int main( int argc, char* args[] ){
 
     while( !quit )
     {
+        count_cd++;
+        count_mon_shoot++;
+        cur_tick = SDL_GetTicks();
     //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 )
         {
@@ -168,10 +176,14 @@ int main( int argc, char* args[] ){
             }
 
             if(gp != NULL){
-                gp->handle_keyboard(e);
+                gp->handle_keyboard(e, gRenderer, count_cd);
             }
         }
+
+        if (gp != NULL) gp->handle_move(count_mon_shoot, gRenderer);
+
         //Clear screen
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
         //Render texture to screen
         switch (controlNum){
@@ -219,8 +231,13 @@ int main( int argc, char* args[] ){
                 gp->render(gRenderer);
                 break;
         }
+
         //Update screen
         SDL_RenderPresent( gRenderer );
+        frame_tick = SDL_GetTicks() - cur_tick;
+        if( frame_tick < SCREEN_TICK_PER_FRAME){
+            SDL_Delay(SCREEN_TICK_PER_FRAME - frame_tick);
+        }
     }
     delete sceneTexture;
     for (int i=0;i<buttnow;i++)

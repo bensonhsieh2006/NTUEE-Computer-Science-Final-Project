@@ -10,6 +10,7 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 
 class BaseMovingObject
@@ -18,30 +19,28 @@ class BaseMovingObject
         BaseMovingObject(int, int, int, int);
         virtual ~BaseMovingObject();
 
-        /*int Getcx() { return cx; }
-        void Setcx(int val) { cx = val; }
-        int Getcy() { return cy; }
-        void Setcy(int val) { cy = val; }
-        int Getvcx() { return vcx; }
-        void Setvcx(int val) { vcx = val; }
-        int Getvcy() { return vcy; }
-        void Setvcy(int val) { vcy = val; }*/
-
         virtual bool loadPic(SDL_Renderer* &r) = 0;
-        void move();
+        bool move();
         void handle( SDL_Event &e );
         void render(SDL_Renderer* &r);
+        int getPosX(){return posX;}
+        int getPosY(){return posY;}
+        int getObjWidth(){return objWidth;}
+        int getObjHeight(){return objHeight;}
+        int getVx(){return vX;}
+        bool checkCollision(SDL_Rect &);
+        SDL_Rect collisionRect = {};
 
     protected:
         int v;
         int posX;
         int posY;
+        int vX;
+        int vY;
         SDL_Texture* cTexture = NULL;
 
     private:
 
-        int vX;
-        int vY;
         int objWidth;
         int objHeight;
 

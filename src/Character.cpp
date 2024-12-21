@@ -6,6 +6,9 @@ Character::Character(int i): BaseMovingObject(98, 150, 0, 0), id(i)
     v = 15;
     posX = 500;
     posY = 300;
+    hp = 100;
+    maxHp = 100;
+    collisionRect = {posX, posY, 98, 150};
 }
 
 Character::~Character()
@@ -41,4 +44,8 @@ bool Character::loadPic(SDL_Renderer* &r){
     SDL_FreeSurface( loadedSurface );
 
     return success;
+}
+
+void Character::gotAttacked(int damage){
+    hp -= damage;
 }

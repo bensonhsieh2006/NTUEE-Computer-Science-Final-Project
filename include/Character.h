@@ -15,12 +15,16 @@ class Character: public BaseMovingObject
         Character(int);
         virtual ~Character();
         bool loadPic(SDL_Renderer* &r);
+        void gotAttacked(int);
+        int getHp() {return hp;}
+        int getMaxHp() {return maxHp;}
 
     protected:
 
     private:
         int id;
         int hp;
+        int maxHp;
 
 };
 
