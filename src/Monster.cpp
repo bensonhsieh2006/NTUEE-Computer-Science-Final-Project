@@ -1,10 +1,15 @@
 #include "Monster.h"
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
 
 Monster::Monster(int i) :BaseMovingObject(200, 200, 0, 0), monid(i)
 {
     //ctor
-    posX = 300;
-    posY = 0;
+    posX = SCREEN_WIDTH/2-100;
+    posY = SCREEN_HEIGHT/2-100;
+    hp = 100;
+    maxHp = 100;
+    collisionRect = {posX, posY, 200, 200};
 }
 
 Monster::~Monster()
@@ -47,4 +52,16 @@ bool Monster::loadPic(SDL_Renderer* &r)
     SDL_FreeSurface( loadedSurface );
 
     return success;
+}
+
+
+void Monster::update_pos(){
+    srand(time(0));
+    vX = rand()%5-2;
+    vY = rand()%5-2;
+    move();
+}
+
+void Monster::gotAttacked(int damage){
+    hp -= damage;
 }

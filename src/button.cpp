@@ -27,6 +27,7 @@ bool button::handle(int &controlNum)
 
     Mix_PlayChannel(-1,sound,0);
     SDL_Delay( 200 );
+
     controlNum  = destNum;
     //std::cout<<controlNum<<std::endl;
     return 1;
