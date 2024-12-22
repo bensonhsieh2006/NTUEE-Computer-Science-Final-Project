@@ -8,6 +8,7 @@
 #include <SDL_mixer.h>
 #include "BaseMovingObject.h"
 #include <string>
+#include <iostream>
 
 class Character: public BaseMovingObject
 {
@@ -18,6 +19,7 @@ class Character: public BaseMovingObject
         void gotAttacked(int);
         int getHp() {return hp;}
         int getMaxHp() {return maxHp;}
+        void playSound();
 
     protected:
 
@@ -25,6 +27,7 @@ class Character: public BaseMovingObject
         int id;
         int hp;
         int maxHp;
+        Mix_Chunk* sound = NULL;
 
 };
 
