@@ -2,7 +2,7 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-Scene::Scene(): poll(CharacterPoll(100)), player(Backpack())
+Scene::Scene(): poll(CharacterPoll(100))//, player(Backpack())
 {
     //ctor
     backgroundTexture = NULL;

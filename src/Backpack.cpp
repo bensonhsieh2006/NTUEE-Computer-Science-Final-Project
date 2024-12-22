@@ -27,27 +27,27 @@ void Backpack::addnum(int id, int num)
     switch (id)
     {
     case (0):
-        if (characternum[id] > 10*characterlvl[id] && (characterlvl[id] < 6))
+        if (characternum[id] >= 3+characterlvl[id] && (characterlvl[id] < 6))
         {
-            characternum[id] -= 10*characterlvl[id];
+            characternum[id] -= (3+characterlvl[id]);
             characterlvl[id]++;
-            std::cout<<"0 level up"<<std::endl;
+            //std::cout<<"0 level up"<<std::endl;
         }
         break;
     case (1):
-        if (characternum[id] > 5+5*characterlvl[id] && (characterlvl[id] < 6))
+        if (characternum[id] >= 2+characterlvl[id] && (characterlvl[id] < 6))
         {
-            characternum[id] -= (5+5*characterlvl[id]);
+            characternum[id] -= (2+characterlvl[id]);
             characterlvl[id]++;
-            std::cout<<"1 level up"<<std::endl;
+            //std::cout<<"1 level up"<<std::endl;
         }
         break;
     case (2):
-        if (characternum[id] > 3+3*characterlvl[id] && (characterlvl[id] < 6))
+        if (characternum[id] > 1+characterlvl[id] && (characterlvl[id] < 6))
         {
-            characternum[id] -= (3+3*characterlvl[id]);
+            characternum[id] -= (1+characterlvl[id]);
             characterlvl[id]++;
-            std::cout<<"2 level up"<<std::endl;
+            //std::cout<<"2 level up"<<std::endl;
         }
         break;
     }
