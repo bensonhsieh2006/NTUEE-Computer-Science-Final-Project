@@ -34,19 +34,21 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
         new_bullet->loadPic(r);
         character_bullets.push_back(new_bullet);
         cd_count = 0;
+
+        C->playSound();
     }
 
 }
 
-void GamePlay::handle_move(int &count_mon_shoot, SDL_Renderer* &r, bool &gameover, bool &won){
-    M->update_pos();
+void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Renderer* &r, bool &gameover, bool &won){
+    M->update_pos(count_mon_move);
 
-    if (count_mon_shoot > 80){
+    if (count_mon_shoot > 70/level){
         Bullet* new_bullet = NULL;
-        int shoot_dir;
-
-        if (M->getVx() == 0) shoot_dir = 1;
-        else shoot_dir = M->getVx()/abs(M->getVx());
+        int shoot_dir, rel_X;
+        rel_X = C->getPosX() - M->getPosX();
+        if (rel_X == 0) shoot_dir = 1;
+        else shoot_dir = rel_X/abs(rel_X);
 
         new_bullet = new Bullet(2+level, M->getPosX() + M->getObjWidth() / 4, M->getPosY() + M->getObjHeight() / 4, shoot_dir);
         new_bullet->loadPic(r);
@@ -94,7 +96,7 @@ void GamePlay::handle_move(int &count_mon_shoot, SDL_Renderer* &r, bool &gameove
 bool GamePlay::load(SDL_Renderer* &r){
     C = new Character(characterID);
     C->loadPic(r);
-    M = new Monster(level);
+    M = new Monster(level-1);
     M->loadPic(r);
 }
 

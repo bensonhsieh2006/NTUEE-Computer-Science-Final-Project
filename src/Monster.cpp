@@ -7,8 +7,12 @@ Monster::Monster(int i) :BaseMovingObject(200, 200, 0, 0), monid(i)
     //ctor
     posX = SCREEN_WIDTH/2-100;
     posY = SCREEN_HEIGHT/2-100;
-    hp = 100;
-    maxHp = 100;
+    switch(monid){
+    case(0): maxHp = 300; break;
+    case(1): maxHp = 1000; break;
+    case(2): maxHp = 4000; break;
+    }
+    hp = maxHp;
     collisionRect = {posX, posY, 200, 200};
 }
 
@@ -23,14 +27,14 @@ bool Monster::loadPic(SDL_Renderer* &r)
 	bool success = true;
     SDL_Surface* loadedSurface=NULL;
     switch (monid){
-    case (1):
+    case (0):
         //Load image at specified path
         loadedSurface = IMG_Load("imgs/monster1.png");
         break;
-    case (2):
+    case (1):
         loadedSurface = IMG_Load("imgs/monster2.png");
         break;
-    case (3):
+    case (2):
         loadedSurface = IMG_Load("imgs/monster3.png");
         break;
     }
@@ -55,11 +59,31 @@ bool Monster::loadPic(SDL_Renderer* &r)
 }
 
 
-void Monster::update_pos(){
-    srand(time(0));
-    vX = rand()%5-2;
-    vY = rand()%5-2;
-    move();
+void Monster::update_pos(int &count_mon_move){
+    if (count_mon_move > 70){
+        srand(time(0));
+
+        switch (monid){
+        case(0):
+            vX = rand()%9-4;
+            vY = rand()%9-4;
+            break;
+        case(1):
+            vX = rand()%19-9;
+            vY = rand()%19-9;
+            break;
+        case(2):
+            vX = rand()%29-14;
+            vY = rand()%29-14;
+            break;
+        }
+        count_mon_move = 0;
+    }
+
+    if(move()){
+        vX = -vX;
+        vY = -vY;
+    }
 }
 
 void Monster::gotAttacked(int damage){

@@ -246,44 +246,86 @@ void Scene::renderMainpage(SDL_Renderer* &r){
 
 void Scene::loadStageOne(SDL_Renderer* &r){
     free();
-    SDL_Color textColor = { 0xFF, 0xFF, 0xFF };
+    SDL_Color textColor = { 0xEE, 0x7B, 0x15 };
     loadPic("imgs/stage1background.png",0,r);
     loadPic("imgs/pause.png", 1, r);
-    loadPic("imgs/play.png", 2, r);
+    loadPic("imgs/wasted.png", 2, r);
+    loadPic("imgs/play.png", 3, r);
+    loadPic("imgs/return.png", 4, r);
     loadText("PAUSED", 0, textColor, r);
     loadText("YOU WON!", 1, textColor, r);
-    loadText("YOU LOST!", 2, textColor, r);
 }
 
 
-void Scene::renderStageOne(SDL_Renderer* &r){
+void Scene::renderStageOne(SDL_Renderer* &r, bool &gameover){
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
-    setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20);
-    SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+
+    if(!gameover){
+        setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20);
+        SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+    }
+    else{
+        setViewport(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10);
+        SDL_RenderCopyF( r, extendedTexture3, NULL, &viewport );
+    }
 
     return;
 }
 
 void Scene::loadStageTwo(SDL_Renderer* &r){
     free();
+    SDL_Color textColor = { 0xEE, 0x7B, 0x15  };
     loadPic("imgs/stage2background.png",0,r);
+    loadPic("imgs/pause.png", 1, r);
+    loadPic("imgs/wasted.png", 2, r);
+    loadPic("imgs/play.png", 3, r);
+    loadPic("imgs/return.png", 4, r);
+    loadText("PAUSED", 0, textColor, r);
+    loadText("YOU WON!", 1, textColor, r);
 }
 
-void Scene::renderStageTwo(SDL_Renderer* &r){
+void Scene::renderStageTwo(SDL_Renderer* &r, bool &gameover){
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
+
+    if(!gameover){
+        setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20);
+        SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+    }
+    else{
+        setViewport(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10);
+        SDL_RenderCopyF( r, extendedTexture3, NULL, &viewport );
+    }
+
     return;
 }
 
 void Scene::loadStageThree(SDL_Renderer* &r){
     free();
+    SDL_Color textColor = { 0xEE, 0x7B, 0x15  };
     loadPic("imgs/stage3background.png",0,r);
+    loadPic("imgs/pause.png", 1, r);
+    loadPic("imgs/wasted.png", 2, r);
+    loadPic("imgs/play.png", 3, r);
+    loadPic("imgs/return.png", 4, r);
+    loadText("PAUSED", 0, textColor, r);
+    loadText("YOU WON!", 1, textColor, r);
 }
 
-void Scene::renderStageThree(SDL_Renderer* &r){
+void Scene::renderStageThree(SDL_Renderer* &r, bool &gameover){
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
+
+    if(!gameover){
+        setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20);
+        SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+    }
+    else{
+        setViewport(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10);
+        SDL_RenderCopyF( r, extendedTexture3, NULL, &viewport );
+    }
+
     return;
 }
 

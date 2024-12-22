@@ -42,7 +42,7 @@ enum button_name{
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-
+Mix_Music* gMusic = NULL;
 
 bool init()
 {
@@ -103,6 +103,15 @@ bool init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
+
+				gMusic = Mix_LoadMUS("soundeffects/gameplay.mp3");
+                if( gMusic == NULL )
+                {
+                    printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
+
+                Mix_VolumeMusic(60);
 			}
 		}
 	}
@@ -116,8 +125,10 @@ void close()
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
+	Mix_FreeMusic(gMusic);
 	gWindow = NULL;
 	gRenderer = NULL;
+	gMusic = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -131,6 +142,8 @@ int main( int argc, char* args[] ){
     {
         cout<<"Initialization failed"<<endl;
     }
+
+
     Scene *sceneTexture = NULL;
     sceneTexture = new Scene();
     int buttnow = 1;
@@ -146,7 +159,7 @@ int main( int argc, char* args[] ){
     GamePlay *gp = NULL;
     int diamondnum = 999;
     Uint32 cur_tick, frame_tick;
-    int count_cd = 0, count_mon_shoot = 0;
+    int count_cd = 0, count_mon_shoot = 0, count_mon_move = 0;
     int controlNum = 0;
 
     //Event handler
@@ -155,10 +168,14 @@ int main( int argc, char* args[] ){
     sceneTexture->loadStart(gRenderer);
     loaded = true;
 
+    if (Mix_PlayingMusic() == 0){
+        Mix_PlayMusic(gMusic, -1);
+    }
     while( !quit )
     {
         count_cd++;
         count_mon_shoot++;
+        count_mon_move++;
         cur_tick = SDL_GetTicks();
     //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 )
@@ -191,9 +208,9 @@ int main( int argc, char* args[] ){
 
         if ((gp != NULL) && (!gameover) && (!paused))
         {
-            gp->handle_move(count_mon_shoot, gRenderer, gameover, won);
+            gp->handle_move(count_mon_shoot, count_mon_move, gRenderer, gameover, won);
         }
-        cout<<won<<endl;
+
 
         //Clear screen
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -254,15 +271,16 @@ int main( int argc, char* args[] ){
                 if (paused && !pauseloaded){
                     continued = false;
                     buttons[1] = new button(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10, STAGE1);
+                    buttnow = 2;
                     pauseloaded = true;
                 }
 
-                sceneTexture->renderStageOne(gRenderer);
+                sceneTexture->renderStageOne(gRenderer, gameover);
                 gp->render(gRenderer, paused);
 
                 if (paused){
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
-                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture2(), NULL, &(sceneTexture->getViewportRect()) );
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
                     SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture1(), NULL, &(sceneTexture->getViewportRect()) );
                 }
@@ -271,16 +289,23 @@ int main( int argc, char* args[] ){
                 if (gameover && won){
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
                     SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
                 }
                 else if(gameover && !won){
-                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
-                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture3(), NULL, &(sceneTexture->getViewportRect()) );
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
                 }
 
 
                 if (continued){
                     delete buttons[1];
                     buttons[1] = NULL;
+                    buttnow = 1;
                     continued = false;
                 }
                 break;
@@ -296,15 +321,56 @@ int main( int argc, char* args[] ){
                             buttons[i] = NULL;
                         }
                     }
-                    buttnow = 0;
+                    buttons[MAIN] = new button(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20, STAGE1);
+                    buttnow = 1;
                     sceneTexture->loadStageTwo(gRenderer);
 
-                    gp = new GamePlay(0, 2); //characterID, stage
+                    gp = new GamePlay(1, 2); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
+                    gameover = false;
                 }
-                sceneTexture->renderStageTwo(gRenderer);
+
+                if (paused && !pauseloaded){
+                    continued = false;
+                    buttons[1] = new button(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10, STAGE1);
+                    buttnow = 2;
+                    pauseloaded = true;
+                }
+
+                sceneTexture->renderStageTwo(gRenderer, gameover);
                 gp->render(gRenderer, paused);
+
+                if (paused){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                }
+
+                //cout << won << endl;
+                if (gameover && won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                }
+                else if(gameover && !won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                }
+
+
+                if (continued){
+                    delete buttons[1];
+                    buttons[1] = NULL;
+                    buttnow = 1;
+                    continued = false;
+                }
                 break;
 
             case(STAGE3):
@@ -318,15 +384,56 @@ int main( int argc, char* args[] ){
                             buttons[i] = NULL;
                         }
                     }
-                    buttnow = 0;
+                    buttons[MAIN] = new button(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20, STAGE1);
+                    buttnow = 1;
                     sceneTexture->loadStageThree(gRenderer);
 
-                    gp = new GamePlay(0, 3); //characterID, stage
+                    gp = new GamePlay(2, 3); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
+                    gameover = false;
                 }
-                sceneTexture->renderStageThree(gRenderer);
+
+                if (paused && !pauseloaded){
+                    continued = false;
+                    buttons[1] = new button(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10, STAGE1);
+                    buttnow = 2;
+                    pauseloaded = true;
+                }
+
+                sceneTexture->renderStageThree(gRenderer, gameover);
                 gp->render(gRenderer, paused);
+
+                if (paused){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                }
+
+                //cout << won << endl;
+                if (gameover && won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                }
+                else if(gameover && !won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                    delete buttons[MAIN];
+                    buttons[MAIN] = NULL;
+                    buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                }
+
+
+                if (continued){
+                    delete buttons[1];
+                    buttons[1] = NULL;
+                    buttnow = 1;
+                    continued = false;
+                }
                 break;
 
             case (SCENEGACHA):
