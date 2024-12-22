@@ -144,7 +144,7 @@ int main( int argc, char* args[] ){
     bool gameover = false, won = false, paused = false;
 
     GamePlay *gp = NULL;
-    int diamondnum = 999;
+    int diamondnum = 99999;
     Uint32 cur_tick, frame_tick;
     int count_cd = 0, count_mon_shoot = 0;
     int controlNum = 0;
@@ -193,7 +193,6 @@ int main( int argc, char* args[] ){
         {
             gp->handle_move(count_mon_shoot, gRenderer, gameover, won);
         }
-        cout<<won<<endl;
 
         //Clear screen
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -384,10 +383,11 @@ int main( int argc, char* args[] ){
                     }
                     buttons[MAIN] = new button(0, 0, SCREEN_WIDTH, SCREEN_WIDTH, SCENEGACHA);
                     buttnow = 1;
-                    sceneTexture->loadGachaX11(gRenderer);
+                    sceneTexture->loadGachaX11(gRenderer, diamondnum, hasgacha);
                     loaded = true;
                 }
-                sceneTexture->renderGachaX11(gRenderer, diamondnum);
+                sceneTexture->renderGachaX11(gRenderer, diamondnum, hasgacha);
+                if (!hasgacha) hasgacha = true;
                 break;
         }
 

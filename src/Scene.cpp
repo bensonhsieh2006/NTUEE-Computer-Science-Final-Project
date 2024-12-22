@@ -12,6 +12,10 @@ Scene::Scene(): poll(CharacterPoll(100))
     extendedTexture3 = NULL;
     extendedTexture4 = NULL;
     extendedTexture5 = NULL;
+    textTexture1 = NULL;
+    textTexture2 = NULL;
+    textTexture3 = NULL;
+    textTexture4 = NULL;
     gFont = TTF_OpenFont( "fonts/Pixel Game.otf", 40 );
 	if( gFont == NULL )
 	{
@@ -145,6 +149,14 @@ bool Scene::loadText(std::string text, int textID, SDL_Color textColor, SDL_Rend
         case(2):
             textTexture3 = SDL_CreateTextureFromSurface( r, textSurface );
             if( textTexture3 == NULL )
+            {
+                printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+                success = false;
+            }
+            break;
+        case(3):
+            textTexture4 = SDL_CreateTextureFromSurface( r, textSurface );
+            if( textTexture4 == NULL )
             {
                 printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
                 success = false;
@@ -323,14 +335,17 @@ void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
 void Scene::loadGachaX1(SDL_Renderer* &r)
 {
     free();
+    SDL_Color textColor = { 0xFF, 0, 0 };
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
     loadPic("imgs/character1.png", 2, r);
     loadPic("imgs/testcharacter2.png", 3, r);
     loadPic("imgs/testcharacter3.png", 4, r);
+    loadText("You got:", 0, textColor, r);
+    loadText("X1", 1, textColor, r);
 }
 
-void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool & hasgacha)
+void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
 {
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
@@ -347,7 +362,7 @@ void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool & hasgacha)
         Dnum -= 100;
         hasgacha = true;
     }
-    setViewport(SCREEN_WIDTH/4, SCREEN_HEIGHT/4, 130, 200);
+    setViewport(SCREEN_WIDTH/2.5-40, SCREEN_HEIGHT/5+10, 260, 400);
     //std::cout<<got<<std::endl;
     switch (poll.onegot)
     {
@@ -358,24 +373,64 @@ void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool & hasgacha)
     case (2):
         SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport); break;
     }
+    setViewport(SCREEN_WIDTH/2.5-10, SCREEN_HEIGHT/12, 160, 120);
+    SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/2.4, SCREEN_HEIGHT/4*3+20, 130, 100);
+    SDL_RenderCopyF(r, textTexture2, NULL, &viewport);
+
 }
 
-void Scene::loadGachaX11(SDL_Renderer* &r)
+void Scene::loadGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
 {
     free();
+    SDL_Color textColor = { 0xFF, 0, 0 };
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
+    loadPic("imgs/character1.png", 2, r);
+    loadPic("imgs/testcharacter2.png", 3, r);
+    loadPic("imgs/testcharacter3.png", 4, r);
+    loadText("You got:", 0, textColor, r);
+    if (!hasgacha && Dnum >= 1000)
+    {
+        poll.get11();
+        Dnum -= 1000;
+        hasgacha = true;
+        loadText("X"+std::to_string(poll.elevengot[0]), 1, textColor, r);
+        loadText("X"+std::to_string(poll.elevengot[1]), 2, textColor, r);
+        loadText("X"+std::to_string(poll.elevengot[2]), 3, textColor, r);
+    }
 }
 
-void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum)
+void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
 {
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
+    SDL_Color textColor = { 0xFF, 0, 0 };
     if (Dnum < 1000)
     {
         setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
         SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
+        return;
     }
+    setViewport(SCREEN_WIDTH/2.5-10, SCREEN_HEIGHT/12, 160, 120);
+    SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/8, SCREEN_HEIGHT/5+10, 260, 400);
+    SDL_RenderCopyF(r, extendedTexture1, NULL, &viewport);
+    setViewport(SCREEN_WIDTH/2.4-250, SCREEN_HEIGHT/4*3+20, 130, 100);
+    SDL_RenderCopyF(r, textTexture2, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/2.5-40, SCREEN_HEIGHT/5+10, 260, 400);
+    SDL_RenderCopyF(r, extendedTexture2, NULL, &viewport);
+    setViewport(SCREEN_WIDTH/2.4, SCREEN_HEIGHT/4*3+20, 130, 100);
+    SDL_RenderCopyF(r, textTexture3, NULL, &viewport);
+
+    setViewport(SCREEN_WIDTH/5*3+20, SCREEN_HEIGHT/5+10, 260, 400);
+    SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
+    setViewport(SCREEN_WIDTH/2.4+270, SCREEN_HEIGHT/4*3+20, 130, 100);
+    SDL_RenderCopyF(r, textTexture4, NULL, &viewport);
+
 }
 
 void Scene::free(){
@@ -418,5 +473,9 @@ void Scene::free(){
     if(textTexture3 != NULL){
         SDL_DestroyTexture(textTexture3);
         textTexture3 = NULL;
+    }
+    if(textTexture4 != NULL){
+        SDL_DestroyTexture(textTexture3);
+        textTexture4 = NULL;
     }
 }

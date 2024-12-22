@@ -22,11 +22,12 @@ class CharacterPoll
         virtual ~CharacterPoll();
         void getone();
         int onegot;
+        void get11();
+        int* elevengot;
 
     protected:
 
     private:
-        int guarantee;
 };
 
 #endif // CHARACTERPOLL_H

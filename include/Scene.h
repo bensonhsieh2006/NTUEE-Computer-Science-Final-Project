@@ -38,8 +38,8 @@ class Scene
         void renderGacha(SDL_Renderer* &, int);
         void loadGachaX1(SDL_Renderer* &);
         void renderGachaX1(SDL_Renderer* &, int &, bool &);
-        void loadGachaX11(SDL_Renderer* &);
-        void renderGachaX11(SDL_Renderer* &, int &);
+        void loadGachaX11(SDL_Renderer* &, int &, bool &);
+        void renderGachaX11(SDL_Renderer* &, int &, bool &);
 
         SDL_Texture *& getExtendedTexture1() {return extendedTexture1;}
         SDL_Texture *& getTextTexture1 () {return textTexture1;}
@@ -52,7 +52,7 @@ class Scene
     protected:
 
     private:
-        SDL_Texture *backgroundTexture, *decorationTexture, *textTexture1, *textTexture2, *textTexture3;
+        SDL_Texture *backgroundTexture, *decorationTexture, *textTexture1, *textTexture2, *textTexture3, *textTexture4;
         SDL_Texture *extendedTexture1,*extendedTexture2, *extendedTexture3,*extendedTexture4,*extendedTexture5;
         SDL_FRect viewport;
         TTF_Font* gFont;
