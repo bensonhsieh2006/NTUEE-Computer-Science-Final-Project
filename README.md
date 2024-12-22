@@ -32,10 +32,10 @@ Click on the red X to quit.
 
 
 4. Team: \
-  There are 3 characters in total to choose from.
-  **Mouse left click** on the "SELECT" button below the characters to choose it as the character for Gameplay. \
-  "The second character(the center one) needs to be drawn at least **twice** from Gacha in order to be selected." \
-  "The third character(the right one) needs to be drawn at least once from Gacha in order to be selected."
+  There are 3 characters in total to choose from. \
+  **Mouse left click** on the "SELECT" button below the characters to choose it as the character for Gameplay. 
+  - "The second character(the center one) needs to be drawn at least **twice** from Gacha in order to be selected." \
+  - "The third character(the right one) needs to be drawn at least once from Gacha in order to be selected."
 
 
 5. Gacha:
@@ -46,7 +46,7 @@ Click on the red X to quit.
     **Mouse left click** once again to return to Gacha page.
 
 
-6. Gameplay(Stage 01, 02, 03):
+6. Gameplay(Stage 01, 02, 03): \
   There are 3 stages in total to choose from, each with a unique monster.
 
   - Character movement: **w(up), a(left), s(down), d(right)** (note that uppercase/lowercase matters) 
