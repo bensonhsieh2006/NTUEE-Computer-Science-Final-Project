@@ -9,11 +9,14 @@
   SDL2_mixer-2.8.0 \
   SDL2_ttf-2.22.0
 
-## Usage
+## Execution
 1. 實測版: Double-click on the **"Final Project.exe"** file
-2. 完整版: Open **"Final Project.cbp"** in Code::Blocks and compile
+2. 完整版: Open **"Final Project.cbp"** in Code::Blocks and **compile**
 
 ## Keyboard & Mouse Operations
+Click on the red X to quit.
+
+
 1. Startpage: \
   **Mouse left click** on the "PLAY" button to enter Story. 
 
@@ -29,8 +32,10 @@
 
 
 4. Team: \
-  **Mouse left click** on the "SELECT" button below the characters to choose it as the character for the gameplay. \
-  Note that the second and third character(the center and right one respectively) needs to be drawn from Gacha in order to select them.
+  There are 3 characters in total to choose from.
+  **Mouse left click** on the "SELECT" button below the characters to choose it as the character for Gameplay. \
+  "The second character(the center one) needs to be drawn at least **twice** from Gacha in order to be selected." \
+  "The third character(the right one) needs to be drawn at least once from Gacha in order to be selected."
 
 
 5. Gacha:
@@ -42,9 +47,11 @@
 
 
 6. Gameplay(Stage 01, 02, 03):
+  There are 3 stages in total to choose from, each with a unique monster.
+
   - Character movement: **w(up), a(left), s(down), d(right)** (note that uppercase/lowercase matters) 
   - Shoot bullets:      **Mouse left click** \
-                        The traveling direction of the bullet depends on the relative position of the mouse and the character 
+                        "The traveling direction of the bullet depends on the relative position of the mouse and the character."
   - Pause:              **Mouse left click** on the "PAUSE" button to pause the game. \
                         **Mouse left click** on the "PLAY" button to resume. 
   - Gameover:           When the game is over, a "RETURN" button will appear on the bottom-left of the screen. \
