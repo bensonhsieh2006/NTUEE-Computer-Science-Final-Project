@@ -1,12 +1,13 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include <BaseMovingObject.h>
+#include "BaseMovingObject.h"
+#include "Backpack.h"
 
 class Bullet : public BaseMovingObject
 {
     public:
-        Bullet(int bid, int _posx, int _posy, int _shoot_dir);
+        Bullet(int bid, int _posx, int _posy, int _shoot_dir, Backpack*);
         virtual ~Bullet();
         bool loadPic(SDL_Renderer* &);
         int getDamage(){return damage;}

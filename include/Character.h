@@ -13,7 +13,7 @@
 class Character: public BaseMovingObject
 {
     public:
-        Character(int);
+        Character(int, int);//id, level
         virtual ~Character();
         bool loadPic(SDL_Renderer* &r);
         void gotAttacked(int);

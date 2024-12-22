@@ -1,15 +1,15 @@
 #include "Character.h"
 
-Character::Character(int i): BaseMovingObject(105, 150, 0, 0), id(i)
+Character::Character(int i, int lvl): BaseMovingObject(105, 150, 0, 0), id(i)
 {
     //ctor
-    v = 15;
+
     posX = 500;
     posY = 300;
     switch(id){
-    case(0): maxHp = 200; break;
-    case(1): maxHp = 500; break;
-    case(2): maxHp = 1500; break;
+    case(0): maxHp = 200*lvl; v = 15; break;
+    case(1): maxHp = 700+400*lvl; v = 10; break;
+    case(2): maxHp = 700+600*lvl; v = 15; break;
     }
     hp = maxHp;
     collisionRect = {posX, posY, 105, 150};

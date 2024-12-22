@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "button.h"
 #include "GamePlay.h"
+#include "Backpack.h"
 
 #define BUTTMAX 5
 #define SCREEN_WIDTH 1080
@@ -34,7 +35,7 @@ enum scene_order{
 
 enum button_name{
     MAIN = 0,      //main, team
-    STAGEONE = 1,
+    STAGEONE = 1,  //stage1, select
     STAGETWO = 2,
     STAGETHREE = 3,
     GACHA = 4,
@@ -154,13 +155,15 @@ int main( int argc, char* args[] ){
     bool loaded = false, pauseloaded = false, continued = false;
     bool quit = false;
     bool hasgacha = false;
-    bool gameover = false, won = false, paused = false;
+    bool gameover = false, won = false, paused = false, gain = false;
 
     GamePlay *gp = NULL;
-    int diamondnum = 999999;
+    int diamondnum = 0;
     Uint32 cur_tick, frame_tick;
     int count_cd = 0, count_mon_shoot = 0, count_mon_move = 0;
     int controlNum = 0;
+    Backpack* player;
+    player = new Backpack();
 
     //Event handler
     SDL_Event e;
@@ -190,25 +193,25 @@ int main( int argc, char* args[] ){
                 if( (controlNum >= STAGE1) && (controlNum <= STAGE3) && (gameover == false)){
 
                     if(paused){
-                        if(buttons[1]->handle(controlNum)) paused = false; continued = true; pauseloaded = false;
+                        if(buttons[1]->handle(controlNum,player)) paused = false; continued = true; pauseloaded = false;
                     }
 
-                    if(buttons[MAIN]->handle( controlNum )) paused = true;
+                    if(buttons[MAIN]->handle( controlNum ,player)) paused = true;
 
                 }
                 else{
-                    for (int i=0;i<buttnow;i++) if(buttons[i]->handle( controlNum ))loaded = !loaded;
-                }
+                    for (int i=0;i<buttnow;i++) if (buttons[i] != NULL) {if(buttons[i]->handle( controlNum ,player)) loaded = !loaded;
+                }}
             }
 
             if(gp != NULL && !gameover && !paused){
-                gp->handle_keyboard(e, gRenderer, count_cd);
+                gp->handle_keyboard(e, gRenderer, count_cd, player);
             }
         }
 
         if ((gp != NULL) && (!gameover) && (!paused))
         {
-            gp->handle_move(count_mon_shoot, count_mon_move, gRenderer, gameover, won);
+            gp->handle_move(count_mon_shoot, count_mon_move, gRenderer, gameover, won, player);
         }
 
         //Clear screen
@@ -272,11 +275,26 @@ int main( int argc, char* args[] ){
                         }
                     }
                     buttons[MAIN] = new button(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, MAINPAGE);
-                    buttnow = 1;
+                    if (player->getselected() == 0)
+                    {
+                        buttons[STAGEONE] = new button(380, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                        buttons[STAGETWO] = new button(690, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                    }
+                    if (player->getselected() == 1 )
+                    {
+                        buttons[STAGEONE] = new button(70, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                        buttons[STAGETWO] = new button(690, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                    }
+                    if (player->getselected() == 2 && (player->getlvl(2) > 0))
+                    {
+                        buttons[STAGEONE] = new button(70, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                        buttons[STAGETWO] = new button(380, SCREEN_HEIGHT/5*4+20, 260, 100, TEAM);
+                    }
+                    buttnow = 3;
 
                     loaded = true;
                 }
-                sceneTexture->renderTeampage(gRenderer);
+                sceneTexture->renderTeampage(gRenderer, player);
                 break;
             case(STAGE1):
                 if(!loaded)
@@ -293,10 +311,11 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadStageOne(gRenderer);
 
-                    gp = new GamePlay(0, 1); //characterID, stage
-                    gp->load(gRenderer);
+                    gp = new GamePlay(player->getselected(), 1); //characterID, stage
+                    gp->load(gRenderer, player);
                     loaded = true;
                     gameover = false;
+                    gain = false;
                 }
 
                 if (paused && !pauseloaded){
@@ -323,6 +342,7 @@ int main( int argc, char* args[] ){
                     delete buttons[MAIN];
                     buttons[MAIN] = NULL;
                     buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                    if (!gain) {diamondnum += 100; gain = true;}
                 }
                 else if(gameover && !won){
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
@@ -356,10 +376,11 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadStageTwo(gRenderer);
 
-                    gp = new GamePlay(1, 2); //characterID, stage
-                    gp->load(gRenderer);
+                    gp = new GamePlay(player->getselected(), 2); //characterID, stage
+                    gp->load(gRenderer, player);
                     loaded = true;
                     gameover = false;
+                    gain = false;
                 }
 
                 if (paused && !pauseloaded){
@@ -386,6 +407,7 @@ int main( int argc, char* args[] ){
                     delete buttons[MAIN];
                     buttons[MAIN] = NULL;
                     buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                    if (!gain) {diamondnum += 500; gain = true;}
                 }
                 else if(gameover && !won){
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
@@ -419,10 +441,11 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadStageThree(gRenderer);
 
-                    gp = new GamePlay(2, 3); //characterID, stage
-                    gp->load(gRenderer);
+                    gp = new GamePlay(player->getselected(), 3); //characterID, stage
+                    gp->load(gRenderer,player);
                     loaded = true;
                     gameover = false;
+                    gain = false;
                 }
 
                 if (paused && !pauseloaded){
@@ -449,6 +472,7 @@ int main( int argc, char* args[] ){
                     delete buttons[MAIN];
                     buttons[MAIN] = NULL;
                     buttons[MAIN] = new button(SCREEN_WIDTH/50, SCREEN_HEIGHT*8/9, SCREEN_WIDTH/10, SCREEN_HEIGHT/10, MAINPAGE);
+                    if (!gain) {diamondnum += 1000; gain = true;}
                 }
                 else if(gameover && !won){
                     sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/6);
@@ -504,9 +528,9 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadGachaX1(gRenderer);
                     loaded = true;
+                    hasgacha = false;
                 }
-                sceneTexture->renderGachaX1(gRenderer, diamondnum, hasgacha);
-                if (!hasgacha) hasgacha = true;
+                sceneTexture->renderGachaX1(gRenderer, diamondnum, hasgacha, player);
                 break;
 
             case (GACHAX11):
@@ -524,9 +548,9 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadGachaX11(gRenderer, diamondnum, hasgacha);
                     loaded = true;
+                    hasgacha = false;
                 }
-                sceneTexture->renderGachaX11(gRenderer, diamondnum, hasgacha);
-                if (!hasgacha) hasgacha = true;
+                sceneTexture->renderGachaX11(gRenderer, diamondnum, hasgacha, player);
                 break;
         }
 
@@ -544,6 +568,7 @@ int main( int argc, char* args[] ){
         delete buttons[i];
     }
     delete [] buttons;
+    delete player;
     close();
     return 0;
 }

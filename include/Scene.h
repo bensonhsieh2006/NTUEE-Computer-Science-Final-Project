@@ -30,7 +30,7 @@ class Scene
         void loadMainpage(SDL_Renderer* &);
         void renderMainpage(SDL_Renderer*&);
         void loadTeampage(SDL_Renderer* &);
-        void renderTeampage(SDL_Renderer* &);
+        void renderTeampage(SDL_Renderer* &, Backpack* &);
         void loadStageOne(SDL_Renderer* &);
         void renderStageOne(SDL_Renderer* &, bool&);
         void loadStageTwo(SDL_Renderer* &);
@@ -40,9 +40,9 @@ class Scene
         void loadGacha(SDL_Renderer* &, int);
         void renderGacha(SDL_Renderer* &, int);
         void loadGachaX1(SDL_Renderer* &);
-        void renderGachaX1(SDL_Renderer* &, int &, bool &);
+        void renderGachaX1(SDL_Renderer* &, int &, bool &, Backpack* &);
         void loadGachaX11(SDL_Renderer* &, int &, bool &);
-        void renderGachaX11(SDL_Renderer* &, int &, bool &);
+        void renderGachaX11(SDL_Renderer* &, int &, bool &, Backpack* &);
 
         SDL_Texture *& getExtendedTexture1() {return extendedTexture1;}
         SDL_Texture *& getExtendedTexture2() {return extendedTexture2;}
@@ -56,7 +56,7 @@ class Scene
 
     private:
         SDL_Texture *backgroundTexture, *decorationTexture, *textTexture1, *textTexture2, *textTexture3, *textTexture4;
-        SDL_Texture *extendedTexture1,*extendedTexture2, *extendedTexture3,*extendedTexture4,*extendedTexture5;
+        SDL_Texture *extendedTexture1,*extendedTexture2, *extendedTexture3,*extendedTexture4,*extendedTexture5,*extendedTexture6,*extendedTexture7;
         SDL_FRect viewport;
         TTF_Font* gFont;
         CharacterPoll poll;

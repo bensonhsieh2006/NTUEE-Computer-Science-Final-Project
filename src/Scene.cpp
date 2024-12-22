@@ -12,6 +12,8 @@ Scene::Scene(): poll(CharacterPoll(100)), player(Backpack())
     extendedTexture3 = NULL;
     extendedTexture4 = NULL;
     extendedTexture5 = NULL;
+    extendedTexture6 = NULL;
+    extendedTexture7 = NULL;
     textTexture1 = NULL;
     textTexture2 = NULL;
     textTexture3 = NULL;
@@ -101,6 +103,22 @@ bool Scene::loadPic(std::string c,int textureID, SDL_Renderer* &gRenderer)
             case(6):
                 extendedTexture5 = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
                 if( extendedTexture5 == NULL )
+                {
+                    printf( "Unable to create texture from %s! SDL Error: %s\n", c.c_str(), SDL_GetError() );
+                    success = false;
+                }
+                break;
+            case(7):
+                extendedTexture6 = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+                if( extendedTexture6 == NULL )
+                {
+                    printf( "Unable to create texture from %s! SDL Error: %s\n", c.c_str(), SDL_GetError() );
+                    success = false;
+                }
+                break;
+            case(8):
+                extendedTexture7 = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+                if( extendedTexture7 == NULL )
                 {
                     printf( "Unable to create texture from %s! SDL Error: %s\n", c.c_str(), SDL_GetError() );
                     success = false;
@@ -261,14 +279,16 @@ void Scene::loadTeampage(SDL_Renderer* &r)
     free();
     loadPic("imgs/teambackground.png",0,r);
     loadPic("imgs/character1.png", 1, r);
-    loadPic("imgs/character1.png", 2, r);
-    loadPic("imgs/character1.png", 3, r);
+    loadPic("imgs/character2.png", 2, r);
+    loadPic("imgs/character3.png", 3, r);
     loadPic("imgs/return.png", 4, r);
     loadPic("imgs/black_star.png", 5, r);
     loadPic("imgs/gold_star.png", 6, r);
+    loadPic("imgs/check.png", 7, r);
+    loadPic("imgs/select.png", 8,r);
 }
 
-void Scene::renderTeampage(SDL_Renderer* &r)
+void Scene::renderTeampage(SDL_Renderer* &r, Backpack* &player)
 {
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
@@ -277,24 +297,78 @@ void Scene::renderTeampage(SDL_Renderer* &r)
     SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
     for (int i=0;i<5;i++)
     {
-        setViewport(70+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
-        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        if (i < player->getlvl(0))
+        {
+            setViewport(70+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture5, NULL, &viewport);
+        }
+        else
+        {
+            setViewport(70+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        }
+    }
+    if (player->getselected() == 0)
+    {
+        setViewport(160, SCREEN_HEIGHT/5*4+20, 100, 100);
+        SDL_RenderCopyF(r, extendedTexture6, NULL, &viewport);
+    }
+    else
+    {
+        setViewport(70, SCREEN_HEIGHT/5*4+20, 260, 100);
+        SDL_RenderCopyF(r, extendedTexture7, NULL, &viewport);
     }
 
     setViewport(380, SCREEN_HEIGHT/5, 260, 400);
     SDL_RenderCopyF(r, extendedTexture1, NULL, &viewport);
     for (int i=0;i<5;i++)
     {
-        setViewport(380+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
-        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        if (i < player->getlvl(1))
+        {
+            setViewport(380+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture5, NULL, &viewport);
+        }
+        else
+        {
+            setViewport(380+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        }
+    }
+    if (player->getselected() == 1)
+    {
+        setViewport(470, SCREEN_HEIGHT/5*4+20, 100, 100);
+        SDL_RenderCopyF(r, extendedTexture6, NULL, &viewport);
+    }
+    else
+    {
+        setViewport(380, SCREEN_HEIGHT/5*4+20, 260, 100);
+        SDL_RenderCopyF(r, extendedTexture7, NULL, &viewport);
     }
 
     setViewport(690, SCREEN_HEIGHT/5, 260, 400);
     SDL_RenderCopyF(r, extendedTexture2, NULL, &viewport);
     for (int i=0;i<5;i++)
     {
-        setViewport(690+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
-        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        if (i < player->getlvl(2))
+        {
+            setViewport(690+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture5, NULL, &viewport);
+        }
+        else
+        {
+            setViewport(690+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+            SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+        }
+    }
+    if (player->getselected() == 2)
+    {
+        setViewport(780, SCREEN_HEIGHT/5*4+20, 100, 100);
+        SDL_RenderCopyF(r, extendedTexture6, NULL, &viewport);
+    }
+    else
+    {
+        setViewport(690, SCREEN_HEIGHT/5*4+20, 260, 100);
+        SDL_RenderCopyF(r, extendedTexture7, NULL, &viewport);
     }
 
     setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
@@ -417,7 +491,14 @@ void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
     setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
     SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
 
-    setViewport(SCREEN_WIDTH/20*15, 5, 25*std::floor(log10(Dnum)+1), SCREEN_HEIGHT/9);
+    if (Dnum != 0)
+    {
+        setViewport(SCREEN_WIDTH/20*15, 5, 25*std::floor(log10(Dnum)+1), SCREEN_HEIGHT/9);
+    }
+    else
+    {
+        setViewport(SCREEN_WIDTH/20*15, 5, 25*1, SCREEN_HEIGHT/9);
+    }
     SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
 }
 
@@ -428,27 +509,28 @@ void Scene::loadGachaX1(SDL_Renderer* &r)
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
     loadPic("imgs/character1.png", 2, r);
-    loadPic("imgs/character1.png", 3, r);
-    loadPic("imgs/character1.png", 4, r);
+    loadPic("imgs/character2.png", 3, r);
+    loadPic("imgs/character3.png", 4, r);
     loadText("You got:", 0, textColor, r);
     loadText("X1", 1, textColor, r);
 }
 
-void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
+void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool &hasgacha, Backpack* &player)
 {
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
 
-    if (Dnum < 100 )
+    if (Dnum < 100 && !hasgacha)
     {
         setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
         SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
         return;
     }
-    else if (!hasgacha)
+    if (!hasgacha)
     {
         poll.getone();
         Dnum -= 100;
+        player->addnum(poll.onegot, 1);
         hasgacha = true;
     }
     setViewport(SCREEN_WIDTH/2.5-40, SCREEN_HEIGHT/5+10, 260, 400);
@@ -477,30 +559,34 @@ void Scene::loadGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
     loadPic("imgs/character1.png", 2, r);
-    loadPic("imgs/character1.png", 3, r);
-    loadPic("imgs/character1.png", 4, r);
+    loadPic("imgs/character2.png", 3, r);
+    loadPic("imgs/character3.png", 4, r);
     loadText("You got:", 0, textColor, r);
-    if (!hasgacha && Dnum >= 1000)
-    {
-        poll.get11();
-        Dnum -= 1000;
-        hasgacha = true;
-        loadText("X"+std::to_string(poll.elevengot[0]), 1, textColor, r);
-        loadText("X"+std::to_string(poll.elevengot[1]), 2, textColor, r);
-        loadText("X"+std::to_string(poll.elevengot[2]), 3, textColor, r);
-    }
 }
 
-void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
+void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha, Backpack* &player)
 {
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
     SDL_Color textColor = { 0xFF, 0, 0 };
-    if (Dnum < 1000)
+    if (Dnum < 1000 && !hasgacha)
     {
         setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
         SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
         return;
+    }
+    if (!hasgacha)
+    {
+        poll.get11();
+        Dnum -= 1000;
+        loadText("X"+std::to_string(poll.elevengot[0]), 1, textColor, r);
+        loadText("X"+std::to_string(poll.elevengot[1]), 2, textColor, r);
+        loadText("X"+std::to_string(poll.elevengot[2]), 3, textColor, r);
+        for (int i=0;i<3;i++)
+        {
+            player->addnum(i, poll.elevengot[i]);
+        }
+        hasgacha = true;
     }
     setViewport(SCREEN_WIDTH/2.5-10, SCREEN_HEIGHT/12, 160, 120);
     SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
@@ -550,6 +636,14 @@ void Scene::free(){
     if(extendedTexture5 != NULL){
         SDL_DestroyTexture(extendedTexture5);
         extendedTexture5 = NULL;
+    }
+    if(extendedTexture6 != NULL){
+        SDL_DestroyTexture(extendedTexture5);
+        extendedTexture6 = NULL;
+    }
+    if(extendedTexture7 != NULL){
+        SDL_DestroyTexture(extendedTexture5);
+        extendedTexture7 = NULL;
     }
     if(textTexture1 != NULL){
         SDL_DestroyTexture(textTexture1);
