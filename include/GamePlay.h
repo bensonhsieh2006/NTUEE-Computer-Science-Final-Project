@@ -15,15 +15,16 @@
 #include "Monster.h"
 #include "Bullet.h"
 #include "BaseMovingObject.h"
+#include "Backpack.h"
 
 class GamePlay
 {
     public:
         GamePlay(int cid, int stg);
         virtual ~GamePlay();
-        void handle_keyboard(SDL_Event &, SDL_Renderer* &, int &cd_count);
-        void handle_move(int &, int&, SDL_Renderer* &, bool&, bool&);
-        bool load(SDL_Renderer* &);
+        void handle_keyboard(SDL_Event &, SDL_Renderer* &, int &cd_count, Backpack*);
+        void handle_move(int &, int&, SDL_Renderer* &, bool&, bool&, Backpack*);
+        bool load(SDL_Renderer* &, Backpack*);
         void render(SDL_Renderer* &, bool &);
 
     protected:

@@ -21,7 +21,7 @@ GamePlay::~GamePlay()
     }
 }
 
-void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
+void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count, Backpack* player){
     C->handle(e);
     if (e.type == SDL_MOUSEBUTTONDOWN && cd_count > 20){
         int xnow, ynow, shoot_dir;
@@ -30,7 +30,7 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
         if ((xnow - C->getPosX()) > 0) shoot_dir = 1;
         else shoot_dir = -1;
         Bullet* new_bullet = NULL;
-        new_bullet = new Bullet(characterID, C->getPosX() + C->getObjWidth() / 4, C->getPosY() + C->getObjHeight() / 10, shoot_dir);
+        new_bullet = new Bullet(characterID, C->getPosX() + C->getObjWidth() / 4, C->getPosY() + C->getObjHeight() / 10, shoot_dir, player);
         new_bullet->loadPic(r);
         character_bullets.push_back(new_bullet);
         cd_count = 0;
@@ -40,7 +40,7 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
 
 }
 
-void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Renderer* &r, bool &gameover, bool &won){
+void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Renderer* &r, bool &gameover, bool &won, Backpack* player){
     M->update_pos(count_mon_move);
 
     if (count_mon_shoot > 70/level){
@@ -50,7 +50,7 @@ void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Render
         if (rel_X == 0) shoot_dir = 1;
         else shoot_dir = rel_X/abs(rel_X);
 
-        new_bullet = new Bullet(2+level, M->getPosX() + M->getObjWidth() / 4, M->getPosY() + M->getObjHeight() / 4, shoot_dir);
+        new_bullet = new Bullet(2+level, M->getPosX() + M->getObjWidth() / 4, M->getPosY() + M->getObjHeight() / 4, shoot_dir, player);
         new_bullet->loadPic(r);
         monster_bullets.push_back(new_bullet);
         count_mon_shoot = 0;
@@ -93,8 +93,8 @@ void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Render
     return;
 }
 
-bool GamePlay::load(SDL_Renderer* &r){
-    C = new Character(characterID);
+bool GamePlay::load(SDL_Renderer* &r, Backpack* player){
+    C = new Character(characterID, player->getlvl(characterID)); //lvl
     C->loadPic(r);
     M = new Monster(level-1);
     M->loadPic(r);

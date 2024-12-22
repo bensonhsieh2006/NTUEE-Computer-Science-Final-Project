@@ -15,7 +15,7 @@ button::~button()
     sound = NULL;
 }
 
-bool button::handle(int &controlNum)
+bool button::handle(int &controlNum, Backpack* &player)
 {
     int xnow, ynow;
     SDL_GetMouseState(&xnow, &ynow);
@@ -29,6 +29,21 @@ bool button::handle(int &controlNum)
     SDL_Delay( 200 );
 
     controlNum  = destNum;
+    if (controlNum == 3)
+    {
+        if (position.x == 70)
+        {
+            if (player->getlvl(0) > 0) player->changeselect(0);
+        }
+        if (position.x == 380)
+        {
+            if (player->getlvl(1) > 0) player->changeselect(1);
+        }
+        if (position.x == 690)
+        {
+            if (player->getlvl(2) > 0) player->changeselect(2);
+        }
+    }
     //std::cout<<controlNum<<std::endl;
     return 1;
 }

@@ -8,13 +8,14 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <string>
+#include "Backpack.h"
 
 class button
 {
     public:
         button(int, int, int, int, int);
         virtual ~button();
-        bool handle(int &);
+        bool handle(int &, Backpack* &);
         void setDetectArea(int, int, int, int);
 
     protected:
