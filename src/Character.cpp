@@ -36,8 +36,10 @@ bool Character::loadPic(SDL_Renderer* &r){
     case (1):
         loadedSurface = IMG_Load("imgs/character2.png");
         break;
+    case (2):
+        loadedSurface = IMG_Load("imgs/character3.png");
+        break;
     }
-
 	if( loadedSurface == NULL )
 	{
 		printf( "Unable to load image ! SDL_image Error: %s\n", IMG_GetError() );

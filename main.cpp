@@ -325,7 +325,7 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadStageTwo(gRenderer);
 
-                    gp = new GamePlay(0, 2); //characterID, stage
+                    gp = new GamePlay(1, 2); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
                     gameover = false;
@@ -388,7 +388,7 @@ int main( int argc, char* args[] ){
                     buttnow = 1;
                     sceneTexture->loadStageThree(gRenderer);
 
-                    gp = new GamePlay(1, 3); //characterID, stage
+                    gp = new GamePlay(2, 3); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
                     gameover = false;
