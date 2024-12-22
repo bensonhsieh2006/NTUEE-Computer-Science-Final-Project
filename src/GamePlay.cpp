@@ -34,6 +34,8 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
         new_bullet->loadPic(r);
         character_bullets.push_back(new_bullet);
         cd_count = 0;
+
+        C->playSound();
     }
 
 }

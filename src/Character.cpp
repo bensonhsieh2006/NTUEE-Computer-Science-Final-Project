@@ -13,11 +13,15 @@ Character::Character(int i): BaseMovingObject(105, 150, 0, 0), id(i)
     }
     hp = maxHp;
     collisionRect = {posX, posY, 105, 150};
+    sound = Mix_LoadWAV("soundeffects/laser.wav");
+    if (sound == NULL) std::cout << "Music Not Loaded! Error: " << Mix_GetError() << std::endl;
 }
 
 Character::~Character()
 {
     //dtor
+    Mix_FreeChunk(sound);
+    sound = NULL;
 }
 
 bool Character::loadPic(SDL_Renderer* &r){
@@ -55,4 +59,8 @@ bool Character::loadPic(SDL_Renderer* &r){
 
 void Character::gotAttacked(int damage){
     hp -= damage;
+}
+
+void Character::playSound(){
+    Mix_PlayChannel(-1,sound,0);
 }

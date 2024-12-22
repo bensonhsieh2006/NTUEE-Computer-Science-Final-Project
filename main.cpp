@@ -42,7 +42,7 @@ enum button_name{
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-
+Mix_Music* gMusic = NULL;
 
 bool init()
 {
@@ -103,6 +103,15 @@ bool init()
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
+
+				gMusic = Mix_LoadMUS("soundeffects/gameplay.mp3");
+                if( gMusic == NULL )
+                {
+                    printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
+
+                Mix_VolumeMusic(60);
 			}
 		}
 	}
@@ -116,8 +125,10 @@ void close()
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
+	Mix_FreeMusic(gMusic);
 	gWindow = NULL;
 	gRenderer = NULL;
+	gMusic = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -131,6 +142,8 @@ int main( int argc, char* args[] ){
     {
         cout<<"Initialization failed"<<endl;
     }
+
+
     Scene *sceneTexture = NULL;
     sceneTexture = new Scene();
     int buttnow = 1;
@@ -155,6 +168,9 @@ int main( int argc, char* args[] ){
     sceneTexture->loadStart(gRenderer);
     loaded = true;
 
+    if (Mix_PlayingMusic() == 0){
+        Mix_PlayMusic(gMusic, -1);
+    }
     while( !quit )
     {
         count_cd++;
