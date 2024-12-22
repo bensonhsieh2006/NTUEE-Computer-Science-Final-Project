@@ -27,11 +27,7 @@ void Backpack::addnum(int id, int num)
     switch (id)
     {
     case (0):
-<<<<<<< HEAD
         if (characternum[id] >= 3+characterlvl[id] && (characterlvl[id] < 6))
-=======
-        if (characternum[id] > (3+characterlvl[id]) && (characterlvl[id] < 6))
->>>>>>> b088a304bdc05e0055709d82dbfd48af6eb675c2
         {
             characternum[id] -= (3+characterlvl[id]);
             characterlvl[id]++;
@@ -39,11 +35,7 @@ void Backpack::addnum(int id, int num)
         }
         break;
     case (1):
-<<<<<<< HEAD
         if (characternum[id] >= 2+characterlvl[id] && (characterlvl[id] < 6))
-=======
-        if (characternum[id] > 2+characterlvl[id] && (characterlvl[id] < 6))
->>>>>>> b088a304bdc05e0055709d82dbfd48af6eb675c2
         {
             characternum[id] -= (2+characterlvl[id]);
             characterlvl[id]++;
