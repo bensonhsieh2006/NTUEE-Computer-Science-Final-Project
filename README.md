@@ -44,7 +44,7 @@
 6. Gameplay(Stage 01, 02, 03):
   - Character movement: **w(up), a(left), s(down), d(right)** (note that uppercase/lowercase matters) 
   - Shoot bullets:      **Mouse left click** \
-                        The traveling direction of the bullet depends on the relative position of the mouse and the character \
+                        The traveling direction of the bullet depends on the relative position of the mouse and the character 
   - Pause:              **Mouse left click** on the "PAUSE" button to pause the game. \
                         **Mouse left click** on the "PLAY" button to resume. 
   - Gameover:           When the game is over, a "RETURN" button will appear on the bottom-left of the screen. \
