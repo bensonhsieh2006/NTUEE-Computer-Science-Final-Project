@@ -59,8 +59,9 @@ bool Character::loadPic(SDL_Renderer* &r){
     return success;
 }
 
-void Character::gotAttacked(int damage){
+Character* Character::operator-(const int &damage){
     hp -= damage;
+    return(this);
 }
 
 void Character::playSound(){

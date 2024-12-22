@@ -71,7 +71,7 @@ bool init()
         }
 
 		//Create window
-		gWindow = SDL_CreateWindow( "game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Immune Battle", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -147,26 +147,28 @@ int main( int argc, char* args[] ){
 
     Scene *sceneTexture = NULL;
     sceneTexture = new Scene();
+
     int buttnow = 1;
     button **buttons;
     buttons = new button* [BUTTMAX];
-
     buttons[MAIN] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
-    bool loaded = false, pauseloaded = false, continued = false;
-    bool quit = false;
-    bool hasgacha = false;
-    bool gameover = false, won = false, paused = false, gain = false;
 
     GamePlay *gp = NULL;
-    int diamondnum = 0;
-    Uint32 cur_tick, frame_tick;
-    int count_cd = 0, count_mon_shoot = 0, count_mon_move = 0;
-    int controlNum = 0;
     Backpack* player;
     player = new Backpack();
 
     //Event handler
     SDL_Event e;
+
+    bool loaded = false, pauseloaded = false, continued = false;
+    bool quit = false;
+    bool hasgacha = false;
+    bool gameover = false, won = false, paused = false, gain = false;
+
+    int diamondnum = 0;
+    Uint32 cur_tick, frame_tick;
+    int count_cd = 0;
+    int controlNum = 0;
 
     sceneTexture->loadStart(gRenderer);
     loaded = true;
@@ -174,11 +176,10 @@ int main( int argc, char* args[] ){
     if (Mix_PlayingMusic() == 0){
         Mix_PlayMusic(gMusic, -1);
     }
+
     while( !quit )
     {
         count_cd++;
-        count_mon_shoot++;
-        count_mon_move++;
         cur_tick = SDL_GetTicks();
     //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 )
@@ -211,7 +212,7 @@ int main( int argc, char* args[] ){
 
         if ((gp != NULL) && (!gameover) && (!paused))
         {
-            gp->handle_move(count_mon_shoot, count_mon_move, gRenderer, gameover, won, player);
+            gp->handle_move(gRenderer, gameover, won, player);
         }
 
         //Clear screen

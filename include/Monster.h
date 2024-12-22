@@ -9,19 +9,21 @@ class Monster : public BaseMovingObject
 {
     public:
         Monster(int i);
+        Monster* operator- (const int &);
         virtual ~Monster();
         bool loadPic(SDL_Renderer* &);
-        void update_pos(int &);
-        void gotAttacked(int);
+        void update_pos();
         int getHp() {return hp;}
-        int getMaxHp() {return maxHp;}
+        int getMaxHp() const {return maxHp;}
 
     protected:
 
     private:
-        int monid;
-        int hp;
+        static int count_mon_move;
+
+        const int monid;
         int maxHp;
+        int hp;
 };
 
 #endif // MONSTER_H

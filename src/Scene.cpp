@@ -2,7 +2,7 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-Scene::Scene(): poll(CharacterPoll(100)), player(Backpack())
+Scene::Scene(): poll(CharacterPoll(100))
 {
     //ctor
     backgroundTexture = NULL;
@@ -202,6 +202,7 @@ void Scene::loadStart(SDL_Renderer* &r)
 {
     loadPic("imgs/opening_background.jpg", 0, r);
     loadPic("imgs/play.png", 1, r);
+    loadPic("imgs/project_name.png", 2, r);
 }
 
 void Scene::renderStart(SDL_Renderer* &r){
@@ -211,6 +212,9 @@ void Scene::renderStart(SDL_Renderer* &r){
 
     setViewport(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4);
     SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+
+    setViewport(SCREEN_WIDTH/50, SCREEN_HEIGHT/12, SCREEN_WIDTH*24/25, SCREEN_HEIGHT/4);
+    SDL_RenderCopyF( r, extendedTexture1, NULL, &viewport );
 
 }
 

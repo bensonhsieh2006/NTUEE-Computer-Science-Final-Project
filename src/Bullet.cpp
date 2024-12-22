@@ -1,9 +1,8 @@
 #include "Bullet.h"
 
-Bullet::Bullet(int bid, int _char_posx, int _char_posy, int _shoot_dir, Backpack* player): BaseMovingObject(30, 30, 4*(bid%3+1)*_shoot_dir, 0) // shoot_dir( +x: 1, -x: -1 )
+Bullet::Bullet(int bid, int _char_posx, int _char_posy, int _shoot_dir, Backpack* player): BaseMovingObject(30, 30, 4*(bid%3+1)*_shoot_dir, 0), id(bid), shoot_dir(_shoot_dir) // shoot_dir( +x: 1, -x: -1 )
 {
     //ctor
-    id = bid;
     switch(id){
         case(0): damage = 5+5*player->getlvl(0); break;
         case(1): damage = 40+10*player->getlvl(1); break;
@@ -14,7 +13,6 @@ Bullet::Bullet(int bid, int _char_posx, int _char_posy, int _shoot_dir, Backpack
     }
     posX = _char_posx;
     posY = _char_posy;
-    shoot_dir = _shoot_dir;
     collisionRect = {posX, posY, 30, 30};
 }
 
@@ -34,11 +32,11 @@ bool Bullet::loadPic(SDL_Renderer* &r){
         else loadedSurface = IMG_Load("imgs/bullet1_rev.png");
         break;
     case (1):
-        if (shoot_dir == 1) loadedSurface = IMG_Load("imgs/bullet2_rev.png");
+        if (shoot_dir == 1) loadedSurface = IMG_Load("imgs/bullet2.png");
         else loadedSurface = IMG_Load("imgs/bullet2_rev.png");
         break;
     case (2):
-        if (shoot_dir == 1) loadedSurface = IMG_Load("imgs/bullet3_rev.png");
+        if (shoot_dir == 1) loadedSurface = IMG_Load("imgs/bullet3.png");
         else loadedSurface = IMG_Load("imgs/bullet3_rev.png");
         break;
 
