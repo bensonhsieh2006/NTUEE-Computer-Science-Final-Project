@@ -52,6 +52,7 @@
 		<Unit filename="include/BaseMovingObject.h" />
 		<Unit filename="include/Bullet.h" />
 		<Unit filename="include/Character.h" />
+		<Unit filename="include/CharacterPoll.h" />
 		<Unit filename="include/GamePlay.h" />
 		<Unit filename="include/Monster.h" />
 		<Unit filename="include/Scene.h" />
@@ -60,6 +61,7 @@
 		<Unit filename="src/BaseMovingObject.cpp" />
 		<Unit filename="src/Bullet.cpp" />
 		<Unit filename="src/Character.cpp" />
+		<Unit filename="src/CharacterPoll.cpp" />
 		<Unit filename="src/GamePlay.cpp" />
 		<Unit filename="src/Monster.cpp" />
 		<Unit filename="src/Scene.cpp" />
