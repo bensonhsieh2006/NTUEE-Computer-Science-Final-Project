@@ -1,14 +1,18 @@
 #include "Character.h"
 
-Character::Character(int i): BaseMovingObject(98, 150, 0, 0), id(i)
+Character::Character(int i): BaseMovingObject(105, 150, 0, 0), id(i)
 {
     //ctor
     v = 15;
     posX = 500;
     posY = 300;
-    hp = 100;
-    maxHp = 100;
-    collisionRect = {posX, posY, 98, 150};
+    switch(id){
+    case(0): maxHp = 200; break;
+    case(1): maxHp = 500; break;
+    case(2): maxHp = 1500; break;
+    }
+    hp = maxHp;
+    collisionRect = {posX, posY, 105, 150};
 }
 
 Character::~Character()
@@ -24,6 +28,9 @@ bool Character::loadPic(SDL_Renderer* &r){
     case (0):
         //Load image at specified path
         loadedSurface = IMG_Load("imgs/character1.png");
+        break;
+    case (1):
+        loadedSurface = IMG_Load("imgs/character2.png");
         break;
     }
 

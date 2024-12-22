@@ -29,11 +29,11 @@ class Scene
         void loadMainpage(SDL_Renderer* &);
         void renderMainpage(SDL_Renderer*&);
         void loadStageOne(SDL_Renderer* &);
-        void renderStageOne(SDL_Renderer* &);
+        void renderStageOne(SDL_Renderer* &, bool&);
         void loadStageTwo(SDL_Renderer* &);
-        void renderStageTwo(SDL_Renderer* &);
+        void renderStageTwo(SDL_Renderer* &, bool &);
         void loadStageThree(SDL_Renderer* &);
-        void renderStageThree(SDL_Renderer* &);
+        void renderStageThree(SDL_Renderer* &, bool &);
         void loadGacha(SDL_Renderer* &, int);
         void renderGacha(SDL_Renderer* &, int);
         void loadGachaX1(SDL_Renderer* &);
@@ -42,9 +42,9 @@ class Scene
         void renderGachaX11(SDL_Renderer* &, int &);
 
         SDL_Texture *& getExtendedTexture1() {return extendedTexture1;}
+        SDL_Texture *& getExtendedTexture2() {return extendedTexture2;}
         SDL_Texture *& getTextTexture1 () {return textTexture1;}
         SDL_Texture *& getTextTexture2 () {return textTexture2;}
-        SDL_Texture *& getTextTexture3 () {return textTexture3;}
         SDL_FRect & getViewportRect() {return viewport;}
 
         void free();
