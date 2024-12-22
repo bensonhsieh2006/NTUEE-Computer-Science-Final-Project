@@ -52,11 +52,11 @@ Click on the red X to quit.
   - Character movement: \
     **w(up), a(left), s(down), d(right)** (note that uppercase/lowercase matters) 
 
-  - Shoot bullets:\     
+  - Shoot bullets: 
     **Mouse left click** \
     "The traveling direction of the bullet depends on the relative position of the mouse and the character."
 
-  - Pause: \        
+  - Pause: 
     **Mouse left click** on the "PAUSE" button to pause the game. \
     **Mouse left click** on the "PLAY" button to resume. 
 
