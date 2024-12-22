@@ -1,6 +1,6 @@
 #include "CharacterPoll.h"
 
-CharacterPoll::CharacterPoll(int n): guarantee(n)
+CharacterPoll::CharacterPoll(int n)
 {
     //ctor
     srand(time(NULL));

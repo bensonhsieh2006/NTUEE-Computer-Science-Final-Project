@@ -144,7 +144,7 @@ int main( int argc, char* args[] ){
     bool gameover = false, won = false, paused = false;
 
     GamePlay *gp = NULL;
-    int diamondnum = 99999;
+    int diamondnum = 999999;
     Uint32 cur_tick, frame_tick;
     int count_cd = 0, count_mon_shoot = 0;
     int controlNum = 0;
@@ -207,7 +207,14 @@ int main( int argc, char* args[] ){
             case(STORY):
                 if(!loaded){
                     sceneTexture->loadStory(gRenderer);
-                    delete buttons[MAIN];
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
                     buttons[MAIN] = new button(SCREEN_WIDTH/20*18, SCREEN_HEIGHT/20, SCREEN_WIDTH/15, SCREEN_HEIGHT/15, 2);
                     loaded = true;
                 }
@@ -217,7 +224,14 @@ int main( int argc, char* args[] ){
             case(MAINPAGE):
                 if(!loaded){
                     sceneTexture->loadMainpage(gRenderer);
-                    delete buttons[MAIN];
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
                     buttons[MAIN] = new button(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, TEAM); //team
                     buttons[STAGEONE] = new button(SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5, STAGE1);
                     buttons[STAGETWO] = new button(SCREEN_WIDTH/5*2, SCREEN_HEIGHT/2.5, SCREEN_WIDTH/5, SCREEN_WIDTH/5, STAGE2);
@@ -229,6 +243,24 @@ int main( int argc, char* args[] ){
                 sceneTexture->renderMainpage(gRenderer);
                 break;
 
+            case (TEAM):
+                if(!loaded){
+                    sceneTexture->loadTeampage(gRenderer);
+                    for (int i=0;i<buttnow;i++)
+                    {
+                        if (buttons[i] != NULL)
+                        {
+                            delete buttons[i];
+                            buttons[i] = NULL;
+                        }
+                    }
+                    buttons[MAIN] = new button(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10, MAINPAGE);
+                    buttnow = 1;
+
+                    loaded = true;
+                }
+                sceneTexture->renderTeampage(gRenderer);
+                break;
             case(STAGE1):
                 if(!loaded)
                 {

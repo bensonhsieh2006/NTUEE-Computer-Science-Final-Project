@@ -2,7 +2,7 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-Scene::Scene(): poll(CharacterPoll(100))
+Scene::Scene(): poll(CharacterPoll(100)), player(Backpack())
 {
     //ctor
     backgroundTexture = NULL;
@@ -256,6 +256,53 @@ void Scene::renderMainpage(SDL_Renderer* &r){
     SDL_RenderCopyF( r, extendedTexture4, NULL, &viewport );
 }
 
+void Scene::loadTeampage(SDL_Renderer* &r)
+{
+    free();
+    loadPic("imgs/teambackground.png",0,r);
+    loadPic("imgs/character1.png", 1, r);
+    loadPic("imgs/character1.png", 2, r);
+    loadPic("imgs/character1.png", 3, r);
+    loadPic("imgs/return.png", 4, r);
+    loadPic("imgs/black_star.png", 5, r);
+    loadPic("imgs/gold_star.png", 6, r);
+}
+
+void Scene::renderTeampage(SDL_Renderer* &r)
+{
+    setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
+
+    setViewport(70, SCREEN_HEIGHT/5, 260, 400);
+    SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
+    for (int i=0;i<5;i++)
+    {
+        setViewport(70+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+    }
+
+    setViewport(380, SCREEN_HEIGHT/5, 260, 400);
+    SDL_RenderCopyF(r, extendedTexture1, NULL, &viewport);
+    for (int i=0;i<5;i++)
+    {
+        setViewport(380+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+    }
+
+    setViewport(690, SCREEN_HEIGHT/5, 260, 400);
+    SDL_RenderCopyF(r, extendedTexture2, NULL, &viewport);
+    for (int i=0;i<5;i++)
+    {
+        setViewport(690+55*i, SCREEN_HEIGHT/5*4-40, 50, 50);
+        SDL_RenderCopyF(r, extendedTexture4, NULL, &viewport);
+    }
+
+    setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
+    SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
+
+
+}
+
 void Scene::loadStageOne(SDL_Renderer* &r){
     free();
     SDL_Color textColor = { 0xFF, 0xFF, 0xFF };
@@ -328,7 +375,7 @@ void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
     setViewport(0, 0, SCREEN_WIDTH/10, SCREEN_WIDTH/10);
     SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
 
-    setViewport(SCREEN_WIDTH/20*15, 5, SCREEN_WIDTH/6/5*(int)(log10(Dnum+1)+1), SCREEN_HEIGHT/9);
+    setViewport(SCREEN_WIDTH/20*15, 5, 25*std::floor(log10(Dnum)+1), SCREEN_HEIGHT/9);
     SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
 }
 
@@ -339,8 +386,8 @@ void Scene::loadGachaX1(SDL_Renderer* &r)
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
     loadPic("imgs/character1.png", 2, r);
-    loadPic("imgs/testcharacter2.png", 3, r);
-    loadPic("imgs/testcharacter3.png", 4, r);
+    loadPic("imgs/character1.png", 3, r);
+    loadPic("imgs/character1.png", 4, r);
     loadText("You got:", 0, textColor, r);
     loadText("X1", 1, textColor, r);
 }
@@ -388,8 +435,8 @@ void Scene::loadGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
     loadPic("imgs/mainpage.png", 0, r);
     loadPic("imgs/no money.png", 1, r);
     loadPic("imgs/character1.png", 2, r);
-    loadPic("imgs/testcharacter2.png", 3, r);
-    loadPic("imgs/testcharacter3.png", 4, r);
+    loadPic("imgs/character1.png", 3, r);
+    loadPic("imgs/character1.png", 4, r);
     loadText("You got:", 0, textColor, r);
     if (!hasgacha && Dnum >= 1000)
     {
@@ -426,9 +473,9 @@ void Scene::renderGachaX11(SDL_Renderer* &r, int &Dnum, bool &hasgacha)
     setViewport(SCREEN_WIDTH/2.4, SCREEN_HEIGHT/4*3+20, 130, 100);
     SDL_RenderCopyF(r, textTexture3, NULL, &viewport);
 
-    setViewport(SCREEN_WIDTH/5*3+20, SCREEN_HEIGHT/5+10, 260, 400);
+    setViewport(SCREEN_WIDTH/5*3, SCREEN_HEIGHT/5+10, 260, 400);
     SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
-    setViewport(SCREEN_WIDTH/2.4+270, SCREEN_HEIGHT/4*3+20, 130, 100);
+    setViewport(SCREEN_WIDTH/2.4+250, SCREEN_HEIGHT/4*3+20, 130, 100);
     SDL_RenderCopyF(r, textTexture4, NULL, &viewport);
 
 }
