@@ -2,11 +2,9 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-GamePlay::GamePlay(int cid, int stg)
+GamePlay::GamePlay(int cid, int stg): characterID(cid), level(stg)
 {
     //ctor
-    characterID = cid;
-    level = stg;
 }
 
 GamePlay::~GamePlay()
@@ -20,6 +18,8 @@ GamePlay::~GamePlay()
         delete M;
     }
 }
+
+int GamePlay::count_mon_shoot = 0;
 
 void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count, Backpack* player){
     C->handle(e);
@@ -40,8 +40,10 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count, Ba
 
 }
 
-void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Renderer* &r, bool &gameover, bool &won, Backpack* player){
-    M->update_pos(count_mon_move);
+void GamePlay::handle_move(SDL_Renderer* &r, bool &gameover, bool &won, Backpack* player){
+
+    count_mon_shoot++;
+    M->update_pos();
 
     if (count_mon_shoot > 70/level){
         Bullet* new_bullet = NULL;
@@ -64,7 +66,7 @@ void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Render
             --it;
         }
         else if(M->checkCollision(eb->collisionRect)){
-            M->gotAttacked(eb->getDamage());
+            M = *M - (eb->getDamage());
             delete eb;
             it = character_bullets.erase(it);
             --it;
@@ -80,7 +82,7 @@ void GamePlay::handle_move(int &count_mon_shoot, int &count_mon_move, SDL_Render
             --it;
         }
         else if(C->checkCollision(eb->collisionRect)){
-            C->gotAttacked(eb->getDamage());
+            C = *C - (eb->getDamage());
             delete eb;
             it = character_bullets.erase(it);
             --it;

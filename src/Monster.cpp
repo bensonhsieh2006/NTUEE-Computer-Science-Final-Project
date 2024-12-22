@@ -21,6 +21,8 @@ Monster::~Monster()
     //dtor
 }
 
+int Monster::count_mon_move = 0;
+
 bool Monster::loadPic(SDL_Renderer* &r)
 {
     //Loading success flag
@@ -59,7 +61,8 @@ bool Monster::loadPic(SDL_Renderer* &r)
 }
 
 
-void Monster::update_pos(int &count_mon_move){
+void Monster::update_pos(){
+    count_mon_move++;
     if (count_mon_move > 70){
         srand(time(0));
 
@@ -86,6 +89,7 @@ void Monster::update_pos(int &count_mon_move){
     }
 }
 
-void Monster::gotAttacked(int damage){
+Monster* Monster::operator-(const int &damage){
     hp -= damage;
+    return(this);
 }

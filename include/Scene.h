@@ -60,7 +60,10 @@ class Scene
         SDL_FRect viewport;
         TTF_Font* gFont;
         CharacterPoll poll;
+<<<<<<< HEAD
         //Backpack player;
+=======
+>>>>>>> b088a304bdc05e0055709d82dbfd48af6eb675c2
 };
 
 #endif // SCENE_H

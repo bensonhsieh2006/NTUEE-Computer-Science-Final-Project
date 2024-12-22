@@ -14,9 +14,9 @@ class Character: public BaseMovingObject
 {
     public:
         Character(int, int);//id, level
+        Character* operator- (const int&);
         virtual ~Character();
         bool loadPic(SDL_Renderer* &r);
-        void gotAttacked(int);
         int getHp() {return hp;}
         int getMaxHp() {return maxHp;}
         void playSound();

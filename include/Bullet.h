@@ -14,8 +14,8 @@ class Bullet : public BaseMovingObject
 
     protected:
         int damage;
-        int id;
-        int shoot_dir;
+        const int id;
+        const int shoot_dir;
 
     private:
 };

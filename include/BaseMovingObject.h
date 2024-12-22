@@ -25,8 +25,8 @@ class BaseMovingObject
         void render(SDL_Renderer* &r);
         int getPosX(){return posX;}
         int getPosY(){return posY;}
-        int getObjWidth(){return objWidth;}
-        int getObjHeight(){return objHeight;}
+        int getObjWidth() const {return objWidth;}
+        int getObjHeight() const {return objHeight;}
         int getVx(){return vX;}
         bool checkCollision(SDL_Rect &);
         SDL_Rect collisionRect = {};
@@ -41,8 +41,8 @@ class BaseMovingObject
 
     private:
 
-        int objWidth;
-        int objHeight;
+        const int objWidth;
+        const int objHeight;
 
 };
 
