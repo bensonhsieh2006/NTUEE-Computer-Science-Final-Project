@@ -11,17 +11,12 @@
 #include "GamePlay.h"
 
 #define BUTTMAX 5
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
+#define SCREEN_FPS 60
+#define SCREEN_TICK_PER_FRAME 1000 / SCREEN_FPS
 
 using namespace std;
-
-int SCREEN_WIDTH = 1080;
-int SCREEN_HEIGHT = 720;
-int SCREEN_FPS = 60;
-int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
-Uint32 cur_tick, frame_tick;
-int count_cd = 0, count_mon_shoot = 0;
-int controlNum = 0;
-
 
 
 enum scene_order{
@@ -143,12 +138,16 @@ int main( int argc, char* args[] ){
     buttons = new button* [BUTTMAX];
 
     buttons[MAIN] = new button(SCREEN_WIDTH*0.3, SCREEN_WIDTH*0.4, SCREEN_WIDTH/2.5, SCREEN_HEIGHT/4, 1);
-    bool loaded = false;
+    bool loaded = false, pauseloaded = false, continued = false;
     bool quit = false;
     bool hasgacha = false;
+    bool gameover = false, won = false, paused = false;
 
     GamePlay *gp = NULL;
-    int diamondnum = 9999;
+    int diamondnum = 999;
+    Uint32 cur_tick, frame_tick;
+    int count_cd = 0, count_mon_shoot = 0;
+    int controlNum = 0;
 
     //Event handler
     SDL_Event e;
@@ -171,28 +170,41 @@ int main( int argc, char* args[] ){
             }
             if (e.type == SDL_MOUSEBUTTONDOWN)
             {
-                for (int i=0;i<buttnow;i++)
-                {
-                    if(buttons[i]->handle( controlNum )){
-                    loaded = !loaded;
+                if( (controlNum >= STAGE1) && (controlNum <= STAGE3) && (gameover == false)){
+
+                    if(paused){
+                        if(buttons[1]->handle(controlNum)) paused = false; continued = true; pauseloaded = false;
                     }
+
+                    if(buttons[MAIN]->handle( controlNum )) paused = true;
+
+                }
+                else{
+                    for (int i=0;i<buttnow;i++) if(buttons[i]->handle( controlNum ))loaded = !loaded;
                 }
             }
 
-            if(gp != NULL){
+            if(gp != NULL && !gameover && !paused){
                 gp->handle_keyboard(e, gRenderer, count_cd);
             }
         }
 
-        if (gp != NULL) gp->handle_move(count_mon_shoot, gRenderer);
+        if ((gp != NULL) && (!gameover) && (!paused))
+        {
+            gp->handle_move(count_mon_shoot, gRenderer, gameover, won);
+        }
+        cout<<won<<endl;
 
         //Clear screen
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
+
         //Render texture to screen
         switch (controlNum){
+
             case(OPENING):
                 sceneTexture->renderStart(gRenderer); break;
+
             case(STORY):
                 if(!loaded){
                     sceneTexture->loadStory(gRenderer);
@@ -202,6 +214,7 @@ int main( int argc, char* args[] ){
                 }
                 sceneTexture->renderStory(gRenderer, controlNum, loaded);
                 break;
+
             case(MAINPAGE):
                 if(!loaded){
                     sceneTexture->loadMainpage(gRenderer);
@@ -216,6 +229,7 @@ int main( int argc, char* args[] ){
                 }
                 sceneTexture->renderMainpage(gRenderer);
                 break;
+
             case(STAGE1):
                 if(!loaded)
                 {
@@ -227,15 +241,48 @@ int main( int argc, char* args[] ){
                             buttons[i] = NULL;
                         }
                     }
-                    buttnow = 0;
+                    buttons[MAIN] = new button(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20, STAGE1);
+                    buttnow = 1;
                     sceneTexture->loadStageOne(gRenderer);
 
                     gp = new GamePlay(0, 1); //characterID, stage
                     gp->load(gRenderer);
                     loaded = true;
+                    gameover = false;
                 }
+
+                if (paused && !pauseloaded){
+                    continued = false;
+                    buttons[1] = new button(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10, STAGE1);
+                    pauseloaded = true;
+                }
+
                 sceneTexture->renderStageOne(gRenderer);
-                gp->render(gRenderer);
+                gp->render(gRenderer, paused);
+
+                if (paused){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*3/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getExtendedTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture1(), NULL, &(sceneTexture->getViewportRect()) );
+                }
+
+                //cout << won << endl;
+                if (gameover && won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture2(), NULL, &(sceneTexture->getViewportRect()) );
+                }
+                else if(gameover && !won){
+                    sceneTexture->setViewport(SCREEN_WIDTH*3/10, SCREEN_HEIGHT*2/5, SCREEN_WIDTH*2/5, SCREEN_HEIGHT/10);
+                    SDL_RenderCopyF( gRenderer, sceneTexture->getTextTexture3(), NULL, &(sceneTexture->getViewportRect()) );
+                }
+
+
+                if (continued){
+                    delete buttons[1];
+                    buttons[1] = NULL;
+                    continued = false;
+                }
                 break;
 
             case(STAGE2):
@@ -257,7 +304,7 @@ int main( int argc, char* args[] ){
                     loaded = true;
                 }
                 sceneTexture->renderStageTwo(gRenderer);
-                gp->render(gRenderer);
+                gp->render(gRenderer, paused);
                 break;
 
             case(STAGE3):
@@ -279,7 +326,7 @@ int main( int argc, char* args[] ){
                     loaded = true;
                 }
                 sceneTexture->renderStageThree(gRenderer);
-                gp->render(gRenderer);
+                gp->render(gRenderer, paused);
                 break;
 
             case (SCENEGACHA):
@@ -323,6 +370,7 @@ int main( int argc, char* args[] ){
                 sceneTexture->renderGachaX1(gRenderer, diamondnum, hasgacha);
                 if (!hasgacha) hasgacha = true;
                 break;
+
             case (GACHAX11):
                 if(!loaded)
                 {
@@ -350,6 +398,7 @@ int main( int argc, char* args[] ){
             SDL_Delay(SCREEN_TICK_PER_FRAME - frame_tick);
         }
     }
+
     delete sceneTexture;
     for (int i=0;i<buttnow;i++)
     {

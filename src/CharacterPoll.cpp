@@ -4,7 +4,6 @@ CharacterPoll::CharacterPoll(int n): guarantee(n)
 {
     //ctor
     srand(time(NULL));
-    std::cout<<RAND_MAX<<std::endl;
 }
 
 CharacterPoll::~CharacterPoll()
@@ -15,7 +14,6 @@ CharacterPoll::~CharacterPoll()
 void CharacterPoll::getone()
 {
     int seed = rand();
-    std::cout<<seed<<std::endl;
     if (seed < 983)
     {
         onegot = 2;

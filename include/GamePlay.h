@@ -22,9 +22,9 @@ class GamePlay
         GamePlay(int cid, int stg);
         virtual ~GamePlay();
         void handle_keyboard(SDL_Event &, SDL_Renderer* &, int &cd_count);
-        void handle_move(int &, SDL_Renderer* &);
+        void handle_move(int &, SDL_Renderer* &, bool&, bool&);
         bool load(SDL_Renderer* &);
-        void render(SDL_Renderer* &);
+        void render(SDL_Renderer* &, bool &);
 
     protected:
         Character* C = NULL;

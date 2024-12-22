@@ -112,8 +112,9 @@ bool Scene::loadPic(std::string c,int textureID, SDL_Renderer* &gRenderer)
 	return success;
 }
 
-bool Scene::loadText(std::string text, SDL_Color textColor, SDL_Renderer* &r){
+bool Scene::loadText(std::string text, int textID, SDL_Color textColor, SDL_Renderer* &r){
     //Render text surface
+    bool success = true;
 	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, text.c_str(), textColor );
 	if( textSurface == NULL )
 	{
@@ -122,24 +123,41 @@ bool Scene::loadText(std::string text, SDL_Color textColor, SDL_Renderer* &r){
 	else
 	{
 		//Create texture from surface pixels
-        textTexture = SDL_CreateTextureFromSurface( r, textSurface );
-		if( textSurface == NULL )
-		{
-			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+		switch (textID){
+        case(0):
+            textTexture1 = SDL_CreateTextureFromSurface( r, textSurface );
+            if( textTexture1 == NULL )
+            {
+                printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+                success = false;
+            }
+            break;
+
+        case(1):
+            textTexture2 = SDL_CreateTextureFromSurface( r, textSurface );
+            if( textTexture2 == NULL )
+            {
+                printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+                success = false;
+            }
+            break;
+
+        case(2):
+            textTexture3 = SDL_CreateTextureFromSurface( r, textSurface );
+            if( textTexture3 == NULL )
+            {
+                printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+                success = false;
+            }
+            break;
 		}
-		/*else
-		{
-			//Get image dimensions
-			mWidth = textSurface->w;
-			mHeight = textSurface->h;
-		}*/
 
 		//Get rid of old surface
 		SDL_FreeSurface( textSurface );
 	}
 
 	//Return success
-	return textTexture != NULL;
+	return success;
 }
 
 void Scene::setViewport(float _x, float _y, float _w, float _h){
@@ -153,7 +171,7 @@ void Scene::setViewport(float _x, float _y, float _w, float _h){
 void Scene::loadStart(SDL_Renderer* &r)
 {
     loadPic("imgs/opening_background.jpg", 0, r);
-    loadPic("imgs/start_button.png", 1, r);
+    loadPic("imgs/play.png", 1, r);
 }
 
 void Scene::renderStart(SDL_Renderer* &r){
@@ -173,7 +191,7 @@ void Scene::loadStory(SDL_Renderer* &r){
 
     loadPic("imgs/opening_background.jpg",0,r);
     loadPic("imgs/story_script.png", 1, r);
-    loadText("Skip", textColor, r);
+    loadText("Skip", 0, textColor, r);
 }
 
 void Scene::renderStory(SDL_Renderer* &r, int &controlNum, bool &loaded){
@@ -185,9 +203,9 @@ void Scene::renderStory(SDL_Renderer* &r, int &controlNum, bool &loaded){
     SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
 
     setViewport(SCREEN_WIDTH/20*18, SCREEN_HEIGHT/20, SCREEN_WIDTH/15, SCREEN_HEIGHT/15);
-    SDL_RenderCopyF( r, textTexture, NULL, &viewport );
+    SDL_RenderCopyF( r, textTexture1, NULL, &viewport );
 
-    textheight -= SCREEN_HEIGHT/7200.0;
+    textheight -= SCREEN_HEIGHT/1000.0;
 //    std::cout<<textheight<<std::endl;
     if (textheight < -900)
     {
@@ -228,13 +246,22 @@ void Scene::renderMainpage(SDL_Renderer* &r){
 
 void Scene::loadStageOne(SDL_Renderer* &r){
     free();
+    SDL_Color textColor = { 0xFF, 0xFF, 0xFF };
     loadPic("imgs/stage1background.png",0,r);
-
+    loadPic("imgs/pause.png", 1, r);
+    loadPic("imgs/play.png", 2, r);
+    loadText("PAUSED", 0, textColor, r);
+    loadText("YOU WON!", 1, textColor, r);
+    loadText("YOU LOST!", 2, textColor, r);
 }
+
 
 void Scene::renderStageOne(SDL_Renderer* &r){
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF( r, backgroundTexture, NULL, &viewport );
+    setViewport(SCREEN_WIDTH*2/5, SCREEN_HEIGHT/70, SCREEN_WIDTH*1/5, SCREEN_HEIGHT/20);
+    SDL_RenderCopyF( r, decorationTexture, NULL, &viewport );
+
     return;
 }
 
@@ -269,7 +296,7 @@ void Scene::loadGacha(SDL_Renderer* &r, int Dnum)
     loadPic("imgs/x1button.png", 2, r);
     loadPic("imgs/x11button.png", 3, r);
     loadPic("imgs/return.png", 4, r);
-    loadText(std::to_string(Dnum), textColor, r);
+    loadText(std::to_string(Dnum), 0, textColor, r);
 }
 
 void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
@@ -290,7 +317,7 @@ void Scene::renderGacha(SDL_Renderer* &r, int Dnum)
     SDL_RenderCopyF(r, extendedTexture3, NULL, &viewport);
 
     setViewport(SCREEN_WIDTH/20*15, 5, SCREEN_WIDTH/6/5*(int)(log10(Dnum+1)+1), SCREEN_HEIGHT/9);
-    SDL_RenderCopyF(r, textTexture, NULL, &viewport);
+    SDL_RenderCopyF(r, textTexture1, NULL, &viewport);
 }
 
 void Scene::loadGachaX1(SDL_Renderer* &r)
@@ -308,7 +335,7 @@ void Scene::renderGachaX1(SDL_Renderer* &r, int &Dnum, bool & hasgacha)
     setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_RenderCopyF(r, backgroundTexture, NULL, &viewport);
 
-    if (Dnum < 100 && (!hasgacha))
+    if (Dnum < 100 )
     {
         setViewport(SCREEN_WIDTH/6, SCREEN_HEIGHT/6, SCREEN_WIDTH/3*2, SCREEN_HEIGHT/3*2);
         SDL_RenderCopyF(r, decorationTexture, NULL, &viewport);
@@ -380,8 +407,16 @@ void Scene::free(){
         SDL_DestroyTexture(extendedTexture5);
         extendedTexture5 = NULL;
     }
-    if(textTexture != NULL){
-        SDL_DestroyTexture(textTexture);
-        textTexture = NULL;
+    if(textTexture1 != NULL){
+        SDL_DestroyTexture(textTexture1);
+        textTexture1 = NULL;
+    }
+    if(textTexture2 != NULL){
+        SDL_DestroyTexture(textTexture2);
+        textTexture2 = NULL;
+    }
+    if(textTexture3 != NULL){
+        SDL_DestroyTexture(textTexture3);
+        textTexture3 = NULL;
     }
 }

@@ -484,7 +484,7 @@
 	<string>
 	<stdio.h>
 
-1734803282 source:c:\users\user\desktop\coding\cpfp\main.cpp
+1734844150 source:c:\users\user\desktop\coding\cpfp\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_bgi.h>
@@ -921,7 +921,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1734802676 c:\users\user\desktop\coding\cpfp\include\scene.h
+1734843606 c:\users\user\desktop\coding\cpfp\include\scene.h
 	<iostream>
 	<SDL.h>
 	<SDL_bgi.h>
@@ -942,16 +942,16 @@
 	<iostream>
 	<string>
 
-1734803417 source:c:\users\user\desktop\coding\cpfp\src\button.cpp
+1734834170 source:c:\users\user\desktop\coding\cpfp\src\button.cpp
 	"button.h"
 
-1734803830 source:c:\users\user\desktop\coding\cpfp\src\scene.cpp
+1734843691 source:c:\users\user\desktop\coding\cpfp\src\scene.cpp
 	"Scene.h"
 
-1734774479 source:c:\users\user\desktop\coding\cpfp\src\basemovingobject.cpp
+1734834170 source:c:\users\user\desktop\coding\cpfp\src\basemovingobject.cpp
 	"BaseMovingObject.h"
 
-1734771908 c:\users\user\desktop\coding\cpfp\include\basemovingobject.h
+1734834170 c:\users\user\desktop\coding\cpfp\include\basemovingobject.h
 	<SDL.h>
 	<SDL_bgi.h>
 	<SDL_image.h>
@@ -959,11 +959,12 @@
 	<SDL_mixer.h>
 	<iostream>
 	<string>
+	<cmath>
 
-1734775296 source:c:\users\user\desktop\coding\cpfp\src\character.cpp
+1734834170 source:c:\users\user\desktop\coding\cpfp\src\character.cpp
 	"Character.h"
 
-1734775296 c:\users\user\desktop\coding\cpfp\include\character.h
+1734834170 c:\users\user\desktop\coding\cpfp\include\character.h
 	<SDL.h>
 	<SDL_bgi.h>
 	<SDL_image.h>
@@ -972,33 +973,33 @@
 	"BaseMovingObject.h"
 	<string>
 
-1734775351 source:c:\users\user\desktop\coding\cpfp\src\gameplay.cpp
+1734844193 source:c:\users\user\desktop\coding\cpfp\src\gameplay.cpp
 	"GamePlay.h"
-	<SDL.h>
-	<SDL_bgi.h>
-	<SDL_image.h>
-	<SDL_ttf.h>
-	<SDL_mixer.h>
-	<BaseMovingObject.h>
-	<string>
-	"Character.h"
 
-1734775312 c:\users\user\desktop\coding\cpfp\include\gameplay.h
+1734841000 c:\users\user\desktop\coding\cpfp\include\gameplay.h
 	<SDL.h>
 	<SDL_bgi.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
 	<SDL_mixer.h>
+	<list>
+	<string>
+	<iostream>
+	<cmath>
 	"Character.h"
 	"Monster.h"
-
-1734775296 c:\users\user\desktop\coding\cpfp\include\monster.h
+	"Bullet.h"
 	"BaseMovingObject.h"
 
-1734783445 source:c:\users\user\desktop\coding\cpfp\src\monster.cpp
+1734834170 c:\users\user\desktop\coding\cpfp\include\monster.h
+	"BaseMovingObject.h"
+	<random>
+	<ctime>
+
+1734834170 source:c:\users\user\desktop\coding\cpfp\src\monster.cpp
 	"Monster.h"
 
-1734803830 c:\users\user\desktop\coding\cpfp\include\characterpoll.h
+1734834170 c:\users\user\desktop\coding\cpfp\include\characterpoll.h
 	<iostream>
 	<SDL.h>
 	<SDL_bgi.h>
@@ -1011,6 +1012,12 @@
 	<stdlib.h>
 	<ctime>
 
-1734804038 source:c:\users\user\desktop\coding\cpfp\src\characterpoll.cpp
+1734836230 source:c:\users\user\desktop\coding\cpfp\src\characterpoll.cpp
 	"CharacterPoll.h"
+
+1734834170 source:c:\users\user\desktop\coding\cpfp\src\bullet.cpp
+	"Bullet.h"
+
+1734834170 c:\users\user\desktop\coding\cpfp\include\bullet.h
+	<BaseMovingObject.h>
 

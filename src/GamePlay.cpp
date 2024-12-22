@@ -38,7 +38,7 @@ void GamePlay::handle_keyboard(SDL_Event &e, SDL_Renderer* &r, int &cd_count){
 
 }
 
-void GamePlay::handle_move(int &count_mon_shoot, SDL_Renderer* &r){
+void GamePlay::handle_move(int &count_mon_shoot, SDL_Renderer* &r, bool &gameover, bool &won){
     M->update_pos();
 
     if (count_mon_shoot > 80){
@@ -85,6 +85,9 @@ void GamePlay::handle_move(int &count_mon_shoot, SDL_Renderer* &r){
         }
         ++it;
     }
+
+    if (C->getHp()<=0){ gameover = true; won = false;}
+    if (M->getHp()<=0){ gameover = true; won = true;}
     return;
 }
 
@@ -95,7 +98,7 @@ bool GamePlay::load(SDL_Renderer* &r){
     M->loadPic(r);
 }
 
-void GamePlay::render(SDL_Renderer* &r){
+void GamePlay::render(SDL_Renderer* &r, bool &paused){
     M->render(r);
     C->render(r);
     for (Bullet* eb: character_bullets){
@@ -109,4 +112,11 @@ void GamePlay::render(SDL_Renderer* &r){
     SDL_RenderFillRect( r, &fillRect );
     fillRect = {SCREEN_WIDTH*99/100 - SCREEN_WIDTH/3*M->getHp()/M->getMaxHp(), SCREEN_HEIGHT/70, SCREEN_WIDTH/3*M->getHp()/M->getMaxHp(), SCREEN_HEIGHT/20};
     SDL_RenderFillRect( r, &fillRect );
+
+    if(paused){
+        SDL_SetRenderDrawBlendMode(r, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor( r, 0x00, 0x00, 0x00, 0xA0 );
+        SDL_Rect fillRect = {SCREEN_WIDTH/8, SCREEN_HEIGHT/8, SCREEN_WIDTH*3/4, SCREEN_HEIGHT*3/4};
+        SDL_RenderFillRect( r, &fillRect );
+    }
 }

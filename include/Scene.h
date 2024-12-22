@@ -19,7 +19,7 @@ class Scene
         Scene();
         virtual ~Scene();
         bool loadPic(std::string, int, SDL_Renderer* &);
-        bool loadText( std::string textureText, SDL_Color textColor, SDL_Renderer* & );
+        bool loadText( std::string textureText, int textID, SDL_Color textColor, SDL_Renderer* & );
         void setViewport(float, float, float, float);
 
         void loadStart(SDL_Renderer* &);
@@ -41,12 +41,18 @@ class Scene
         void loadGachaX11(SDL_Renderer* &);
         void renderGachaX11(SDL_Renderer* &, int &);
 
+        SDL_Texture *& getExtendedTexture1() {return extendedTexture1;}
+        SDL_Texture *& getTextTexture1 () {return textTexture1;}
+        SDL_Texture *& getTextTexture2 () {return textTexture2;}
+        SDL_Texture *& getTextTexture3 () {return textTexture3;}
+        SDL_FRect & getViewportRect() {return viewport;}
+
         void free();
 
     protected:
 
     private:
-        SDL_Texture *backgroundTexture, *decorationTexture, *textTexture;
+        SDL_Texture *backgroundTexture, *decorationTexture, *textTexture1, *textTexture2, *textTexture3;
         SDL_Texture *extendedTexture1,*extendedTexture2, *extendedTexture3,*extendedTexture4,*extendedTexture5;
         SDL_FRect viewport;
         TTF_Font* gFont;
