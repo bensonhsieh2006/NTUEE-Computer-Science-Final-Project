@@ -165,7 +165,7 @@ int main( int argc, char* args[] ){
     bool hasgacha = false;
     bool gameover = false, won = false, paused = false, gain = false;
 
-    int diamondnum = 0;
+    int diamondnum = 99999;
     Uint32 cur_tick, frame_tick;
     int count_cd = 0;
     int controlNum = 0;
